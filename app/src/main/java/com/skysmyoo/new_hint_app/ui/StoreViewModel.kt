@@ -34,4 +34,10 @@ class StoreViewModel @Inject constructor(
     fun getStoreCode(): String? {
         return repository.getStoreCode()
     }
+
+    fun putSample() {
+        viewModelScope.launch {
+            repository.putSample()
+        }
+    }
 }

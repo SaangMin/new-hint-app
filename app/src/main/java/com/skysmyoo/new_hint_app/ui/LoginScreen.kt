@@ -5,6 +5,7 @@
 
 package com.skysmyoo.new_hint_app.ui
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -41,6 +42,7 @@ import androidx.navigation.NavController
 import com.skysmyoo.new_hint_app.ui.theme.MainColor
 import com.skysmyoo.new_hint_app.ui.theme.ServeColor
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun LoginScreen(navController: NavController, viewModel: StoreViewModel) {
 
@@ -48,6 +50,8 @@ fun LoginScreen(navController: NavController, viewModel: StoreViewModel) {
     val keyboardController = LocalSoftwareKeyboardController.current
 
     val storeModel by viewModel.storeModel.collectAsState()
+
+    Log.d("TAG","$storeModel")
 
     LaunchedEffect(Unit) {
         if (viewModel.getStoreCode() != null) {
@@ -101,6 +105,17 @@ fun LoginScreen(navController: NavController, viewModel: StoreViewModel) {
             colors = ButtonDefaults.buttonColors(MainColor)
         ) {
             Text(text = "입장하기", color = Color.White, fontWeight = FontWeight.Bold)
+        }
+
+        Spacer(modifier = Modifier.padding(24.dp))
+
+        Button(
+            onClick = {
+                viewModel.putSample()
+            },
+            colors = ButtonDefaults.buttonColors(MainColor)
+        ) {
+            Text(text = "Test", color = Color.White, fontWeight = FontWeight.Bold)
         }
     }
 }
