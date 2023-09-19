@@ -5,6 +5,7 @@ import javax.inject.Inject
 
 class StoreDataSource @Inject constructor(
     private val storeModelDao: StoreModelDao,
+    private val preferencesManager: SharedPreferencesManager,
 ) {
     suspend fun insertNewStore(store: StoreModel) {
         storeModelDao.insertNewStore(store)
@@ -17,4 +18,13 @@ class StoreDataSource @Inject constructor(
     suspend fun getStore(): StoreModel {
         return storeModelDao.getStore()
     }
+
+    fun setStoreCode(code: String) {
+        preferencesManager.setStoreCode(code)
+    }
+
+    fun getStoreCode(): String? {
+        return preferencesManager.getStoreCode()
+    }
+
 }

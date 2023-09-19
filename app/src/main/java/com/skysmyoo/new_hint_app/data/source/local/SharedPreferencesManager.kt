@@ -13,7 +13,7 @@ class SharedPreferencesManager @Inject constructor(context: Context) {
         sharedPreferences.edit().putString(Constants.KEY_STORE_CODE, title).apply()
     }
 
-    fun getStoreName(): String? {
+    fun getStoreCode(): String? {
         return sharedPreferences.getString(Constants.KEY_STORE_CODE, "")
     }
 

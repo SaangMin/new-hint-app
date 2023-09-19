@@ -15,4 +15,5 @@ object Constants {
     const val KEY_CUSTOMER_NAME = "key_customer_name"
     const val WRONG_HINT_CODE_MSG = "잘못된 코드입니다."
     const val KEY_LAST_PHONE_NUMBER = "key_last_phone_number"
+    const val PATH_STORES = "stores"
 }
