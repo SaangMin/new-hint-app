@@ -1,4 +1,7 @@
-@file:OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
+@file:OptIn(
+    ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class,
+    ExperimentalMaterial3Api::class
+)
 
 package com.skysmyoo.new_hint_app.ui
 
@@ -20,6 +23,9 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
@@ -36,10 +42,26 @@ import com.skysmyoo.new_hint_app.ui.theme.MainColor
 import com.skysmyoo.new_hint_app.ui.theme.ServeColor
 
 @Composable
-fun LoginScreen(navController: NavController) {
+fun LoginScreen(navController: NavController, viewModel: StoreViewModel) {
 
-    val inputHintCode = rememberSaveable { mutableStateOf("") }
+    val inputStoreCode = rememberSaveable { mutableStateOf("") }
     val keyboardController = LocalSoftwareKeyboardController.current
+
+    val storeModel by viewModel.storeModel.collectAsState()
+
+    LaunchedEffect(Unit) {
+        if (viewModel.getStoreCode() != null) {
+            viewModel.getStore()
+        }
+    }
+
+    storeModel?.let {
+        HomeScreen(
+            navController = navController,
+            viewModel = viewModel,
+            storeModel = it
+        )
+    }
 
     Column(
         modifier = Modifier
@@ -50,12 +72,12 @@ fun LoginScreen(navController: NavController) {
     ) {
 
         OutlinedTextField(
-            value = inputHintCode.value,
+            value = inputStoreCode.value,
             placeholder = { Text(text = "지점 코드를 입력해주세요.") },
             colors = TextFieldDefaults.outlinedTextFieldColors(
                 containerColor = Color.White
             ),
-            onValueChange = { inputHintCode.value = it },
+            onValueChange = { inputStoreCode.value = it },
             modifier = Modifier
                 .padding(8.dp)
                 .wrapContentHeight()
@@ -74,6 +96,7 @@ fun LoginScreen(navController: NavController) {
 
         Button(
             onClick = {
+                viewModel.findStore(inputStoreCode.value)
             },
             colors = ButtonDefaults.buttonColors(MainColor)
         ) {
