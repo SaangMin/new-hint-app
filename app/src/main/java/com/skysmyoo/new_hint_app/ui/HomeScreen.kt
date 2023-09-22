@@ -21,6 +21,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -39,9 +42,27 @@ import com.skysmyoo.new_hint_app.ui.theme.TitleColor
 fun HomeScreen(navController: NavController, viewModel: StoreViewModel) {
 
     val storeModel by viewModel.storeModel.collectAsState()
+    var isInputPasswordDialogShown by rememberSaveable { mutableStateOf(false) }
+    val isSuccessClearLocalData by viewModel.isSuccessClearLocalData.collectAsState()
 
     LaunchedEffect(Unit) {
         viewModel.findStoreFromLocal()
+    }
+
+    if (isInputPasswordDialogShown) {
+        InputPasswordDialog(
+            onDismissRequest = {
+                isInputPasswordDialogShown = false
+            },
+            onCorrectPassword = {
+                isInputPasswordDialogShown = false
+                viewModel.clearLocalData()
+            }
+        )
+    }
+
+    if (isSuccessClearLocalData) {
+        navController.navigate("login")
     }
 
     Column(
@@ -108,13 +129,14 @@ fun HomeScreen(navController: NavController, viewModel: StoreViewModel) {
         ) {
             Button(
                 onClick = {
+                    isInputPasswordDialogShown = true
                 },
                 colors = ButtonDefaults.buttonColors(containerColor = MainColor),
                 modifier = Modifier
                     .padding(vertical = 2.dp)
             ) {
                 Text(
-                    text = "관리자 모드",
+                    text = "테마 코드 입력창으로 돌아가기",
                     color = Color.White,
                 )
             }
