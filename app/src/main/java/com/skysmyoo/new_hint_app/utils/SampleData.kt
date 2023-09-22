@@ -11,7 +11,8 @@ object SampleData {
             code = "1234",
             hintName = "hinttest",
             hintContent = "content",
-            resultContent = "result"
+            resultContent = "result",
+            progress = "50%"
         )
 
     val sampleTheme =

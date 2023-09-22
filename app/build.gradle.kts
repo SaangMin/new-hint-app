@@ -1,4 +1,3 @@
-import org.jetbrains.kotlin.kapt3.base.Kapt.kapt
 import org.jetbrains.kotlin.konan.properties.Properties
 
 plugins {
@@ -26,6 +25,7 @@ android {
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
+        setProperty("archivesBaseName", "${applicationId}-v${versionName}")
 
         buildConfigField("String", "BASE_URL", properties["base_url"].toString())
 
