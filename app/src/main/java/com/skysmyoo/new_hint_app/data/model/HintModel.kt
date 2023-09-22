@@ -18,4 +18,5 @@ data class HintModel (
     @ColumnInfo(name = "hintImage") val hintImage: String? = null,
     @ColumnInfo(name = "resultContent") val resultContent: String,
     @ColumnInfo(name = "resultImage") val resultImage: String? = null,
+    @ColumnInfo(name = "progress") val progress: String,
 ) : Serializable
