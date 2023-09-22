@@ -1,4 +1,4 @@
-package com.skysmyoo.new_hint_app.ui
+package com.skysmyoo.new_hint_app.ui.home
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement

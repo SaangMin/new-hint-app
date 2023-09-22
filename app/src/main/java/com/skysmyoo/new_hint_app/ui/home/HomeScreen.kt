@@ -1,4 +1,4 @@
-package com.skysmyoo.new_hint_app.ui
+package com.skysmyoo.new_hint_app.ui.home
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -33,6 +33,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.skysmyoo.new_hint_app.ui.StoreViewModel
 import com.skysmyoo.new_hint_app.ui.components.ThemeItem
 import com.skysmyoo.new_hint_app.ui.theme.MainColor
 import com.skysmyoo.new_hint_app.ui.theme.ServeColor

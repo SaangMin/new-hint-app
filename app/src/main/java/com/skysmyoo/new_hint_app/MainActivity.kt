@@ -8,7 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.skysmyoo.new_hint_app.ui.HomeScreen
+import com.skysmyoo.new_hint_app.ui.home.HomeScreen
 import com.skysmyoo.new_hint_app.ui.LoginScreen
 import com.skysmyoo.new_hint_app.ui.StoreViewModel
 import dagger.hilt.android.AndroidEntryPoint
