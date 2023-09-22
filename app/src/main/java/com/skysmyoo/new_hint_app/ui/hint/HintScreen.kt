@@ -18,6 +18,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -56,6 +57,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -68,6 +70,7 @@ import androidx.lifecycle.LifecycleEventObserver
 import androidx.navigation.NavController
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
+import com.skysmyoo.new_hint_app.R
 import com.skysmyoo.new_hint_app.ui.home.InputPasswordDialog
 import com.skysmyoo.new_hint_app.ui.theme.HintBgColor
 import com.skysmyoo.new_hint_app.ui.theme.MainColor
@@ -100,6 +103,8 @@ fun HintScreen(
     val theme by viewModel.savedTheme.collectAsState()
     val hint by viewModel.foundedHint.collectAsState()
     val isNotFoundHint by viewModel.isNotFoundHint.collectAsState()
+    val isShowHint by viewModel.isShowHint.collectAsState()
+    val isShowProgress by viewModel.isShowProgress.collectAsState()
 
     val lifecycleOwner = LocalLifecycleOwner.current
     val lifecycle = lifecycleOwner.lifecycle
@@ -159,13 +164,14 @@ fun HintScreen(
         modifier = Modifier
             .fillMaxSize()
             .background(color = MainColor),
-        contentAlignment = Alignment.Center
+        contentAlignment = Alignment.Center,
     ) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
+                .verticalScroll(rememberScrollState())
                 .padding(16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
+            horizontalAlignment = Alignment.CenterHorizontally,
         ) {
 
             Spacer(modifier = Modifier.height(8.dp))
@@ -251,11 +257,32 @@ fun HintScreen(
                         contentDescription = null,
                     )
                 }
+
+                Spacer(modifier = Modifier.padding(12.dp))
+
+                IconButton(
+                    onClick = {
+                        if (theme != null) {
+                            viewModel.findProgress(theme!!, inputHintCode.value)
+                        }
+                        keyboardController?.hide()
+                    },
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(30))
+                        .weight(0.4f)
+                        .background(ServeColor),
+                ) {
+                    Icon(
+                        painter = painterResource(R.drawable.baseline_access_time_24),
+                        tint = Color.Black,
+                        contentDescription = null
+                    )
+                }
             }
 
             Spacer(modifier = Modifier.padding(16.dp))
 
-            if (hint != null) {
+            if (isShowHint) {
                 Column(
                     modifier = Modifier
                         .wrapContentSize()
@@ -296,8 +323,9 @@ fun HintScreen(
                             .fillMaxHeight()
                     )
 
-                    Box(
-                        contentAlignment = Alignment.BottomCenter
+                    Column(
+                        verticalArrangement = Arrangement.Bottom,
+                        horizontalAlignment = Alignment.CenterHorizontally,
                     ) {
                         Button(
                             onClick = {
@@ -307,6 +335,47 @@ fun HintScreen(
                         ) {
                             Text(text = "정답 보기", color = Color.White, fontWeight = FontWeight.Bold)
                         }
+
+                        Button(
+                            onClick = {
+                                viewModel.closeHint()
+                            },
+                            colors = ButtonDefaults.buttonColors(MainColor)
+                        ) {
+                            Text(text = "닫기", color = Color.White, fontWeight = FontWeight.Bold)
+                        }
+                    }
+                }
+            }
+
+            if (isShowProgress) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .wrapContentHeight()
+                        .clip(RoundedCornerShape(5.dp))
+                        .background(color = HintBgColor)
+                        .padding(24.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center,
+                ) {
+                    Text(
+                        text = hint?.progress ?: "",
+                        modifier = Modifier
+                            .padding(16.dp),
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.Bold,
+                    )
+
+                    Spacer(modifier = Modifier.padding(24.dp))
+
+                    Button(
+                        onClick = {
+                            viewModel.closeProgress()
+                        },
+                        colors = ButtonDefaults.buttonColors(MainColor)
+                    ) {
+                        Text(text = "닫기", color = Color.White, fontWeight = FontWeight.Bold)
                     }
                 }
             }

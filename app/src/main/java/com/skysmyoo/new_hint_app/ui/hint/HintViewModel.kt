@@ -26,6 +26,12 @@ class HintViewModel @Inject constructor(
     private var _savedTheme = MutableStateFlow<ThemeModel?>(null)
     val savedTheme: StateFlow<ThemeModel?> = _savedTheme
 
+    private val _isShowHint = MutableStateFlow(false)
+    val isShowHint: StateFlow<Boolean> = _isShowHint
+
+    private val _isShowProgress = MutableStateFlow(false)
+    val isShowProgress: StateFlow<Boolean> = _isShowProgress
+
     fun findHint(
         theme: ThemeModel,
         code: String,
@@ -39,6 +45,25 @@ class HintViewModel @Inject constructor(
                 return@launch
             } else {
                 _foundedHint.value = savedHintModel
+                _isShowHint.value = true
+            }
+        }
+    }
+
+    fun findProgress(
+        theme: ThemeModel,
+        code: String,
+    ) {
+        viewModelScope.launch {
+            val savedHintModel = repository.getHint(theme, code)
+            if (savedHintModel == null) {
+                _isNotFoundHint.value = true
+                delay(100)
+                _isNotFoundHint.value = false
+                return@launch
+            } else {
+                _foundedHint.value = savedHintModel
+                _isShowProgress.value = true
             }
         }
     }
@@ -53,5 +78,13 @@ class HintViewModel @Inject constructor(
     fun resetData() {
         _foundedHint.value = null
         _savedTheme.value = null
+    }
+
+    fun closeHint() {
+        _isShowHint.value = false
+    }
+
+    fun closeProgress() {
+        _isShowProgress.value = false
     }
 }
