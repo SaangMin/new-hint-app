@@ -1,5 +1,7 @@
 package com.skysmyoo.new_hint_app.ui.home
 
+import androidx.activity.OnBackPressedCallback
+import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -18,6 +20,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -28,10 +31,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
 import androidx.navigation.NavController
 import com.skysmyoo.new_hint_app.ui.StoreViewModel
 import com.skysmyoo.new_hint_app.ui.components.ThemeItem
@@ -45,6 +51,17 @@ fun HomeScreen(navController: NavController, viewModel: StoreViewModel) {
     val storeModel by viewModel.storeModel.collectAsState()
     var isInputPasswordDialogShown by rememberSaveable { mutableStateOf(false) }
     val isSuccessClearLocalData by viewModel.isSuccessClearLocalData.collectAsState()
+
+    val lifecycleOwner = LocalLifecycleOwner.current
+    val lifecycle = lifecycleOwner.lifecycle
+
+    val backDispatcher = LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher
+
+    val callback = object : OnBackPressedCallback(true) {
+        override fun handleOnBackPressed() {
+
+        }
+    }
 
     LaunchedEffect(Unit) {
         viewModel.findStoreFromLocal()
@@ -143,5 +160,19 @@ fun HomeScreen(navController: NavController, viewModel: StoreViewModel) {
             }
         }
         Spacer(modifier = Modifier.height(16.dp))
+    }
+
+    DisposableEffect(key1 = true) {
+        val observer = LifecycleEventObserver { _, event ->
+            if (event == Lifecycle.Event.ON_RESUME) {
+                backDispatcher?.addCallback(callback)
+            }
+        }
+        lifecycle.addObserver(observer)
+
+        onDispose {
+            lifecycle.removeObserver(observer)
+            callback.remove()
+        }
     }
 }
