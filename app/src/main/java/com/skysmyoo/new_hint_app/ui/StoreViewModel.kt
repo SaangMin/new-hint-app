@@ -31,7 +31,7 @@ class StoreViewModel @Inject constructor(
                 _storeModel.value = storeModel
                 _isSuccessFindStore.value = true
                 delay(100)
-                _isSuccessClearLocalData.value = false
+                _isSuccessFindStore.value = false
             }
         }
     }
