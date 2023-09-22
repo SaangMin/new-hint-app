@@ -15,9 +15,17 @@ class StoreRepository @Inject constructor(
         return localDataSource.getStore()
     }
 
-    suspend fun findStore(code: String): StoreModel {
+    suspend fun findStore(code: String): StoreModel? {
         val storeModel = remoteDataSource.getStoreByCode(code)
-        return storeModel ?: localDataSource.getStore()
+        if (storeModel != null) {
+            localDataSource.insertNewStore(storeModel)
+            localDataSource.setStoreCode(code)
+        }
+        return storeModel
+    }
+
+    suspend fun findStoreFromLocal(): StoreModel {
+        return localDataSource.getStore()
     }
 
     fun getStoreCode(): String? {

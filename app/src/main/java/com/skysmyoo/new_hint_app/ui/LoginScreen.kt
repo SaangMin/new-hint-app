@@ -5,7 +5,6 @@
 
 package com.skysmyoo.new_hint_app.ui
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -50,21 +49,18 @@ fun LoginScreen(navController: NavController, viewModel: StoreViewModel) {
     val keyboardController = LocalSoftwareKeyboardController.current
 
     val storeModel by viewModel.storeModel.collectAsState()
-
-    Log.d("TAG","$storeModel")
+    val isSuccessFindStore by viewModel.isSuccessFindStore.collectAsState()
 
     LaunchedEffect(Unit) {
-        if (viewModel.getStoreCode() != null) {
-            viewModel.getStore()
-        }
+        viewModel.findStoreFromLocal()
     }
 
-    storeModel?.let {
-        HomeScreen(
-            navController = navController,
-            viewModel = viewModel,
-            storeModel = it
-        )
+    if(storeModel != null) {
+        navController.navigate("home")
+    }
+
+    if(isSuccessFindStore) {
+        navController.navigate("home")
     }
 
     Column(

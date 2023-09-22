@@ -18,6 +18,9 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -27,14 +30,19 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.skysmyoo.new_hint_app.data.model.StoreModel
 import com.skysmyoo.new_hint_app.ui.components.ThemeItem
 import com.skysmyoo.new_hint_app.ui.theme.MainColor
 import com.skysmyoo.new_hint_app.ui.theme.ServeColor
 import com.skysmyoo.new_hint_app.ui.theme.TitleColor
 
 @Composable
-fun HomeScreen(navController: NavController, viewModel: StoreViewModel, storeModel: StoreModel) {
+fun HomeScreen(navController: NavController, viewModel: StoreViewModel) {
+
+    val storeModel by viewModel.storeModel.collectAsState()
+
+    LaunchedEffect(Unit) {
+        viewModel.findStoreFromLocal()
+    }
 
     Column(
         modifier = Modifier
@@ -56,7 +64,7 @@ fun HomeScreen(navController: NavController, viewModel: StoreViewModel, storeMod
                 .background(MainColor)
         ) {
             Text(
-                text = storeModel.storeName,
+                text = storeModel?.storeName ?: "",
                 fontSize = 25.sp,
                 color = TitleColor,
                 textAlign = TextAlign.Center,
@@ -76,7 +84,7 @@ fun HomeScreen(navController: NavController, viewModel: StoreViewModel, storeMod
                 contentPadding = PaddingValues(16.dp),
                 verticalArrangement = Arrangement.spacedBy(16.dp),
             ) {
-                items(storeModel.themeList) { theme ->
+                items(storeModel?.themeList ?: emptyList()) { theme ->
                     Column {
                         ThemeItem(
                             theme = theme,

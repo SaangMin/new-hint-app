@@ -8,6 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.skysmyoo.new_hint_app.ui.HomeScreen
 import com.skysmyoo.new_hint_app.ui.LoginScreen
 import com.skysmyoo.new_hint_app.ui.StoreViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -15,7 +16,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
-    private val storeViewModel : StoreViewModel by viewModels()
+    private val storeViewModel: StoreViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -32,10 +33,14 @@ fun Navigation(
 
     NavHost(
         navController = navController,
-        startDestination = "login"
+        startDestination = if (storeViewModel.getStoreCode().isNullOrEmpty()) "login" else "home"
     ) {
         composable("login") {
             LoginScreen(navController, storeViewModel)
+        }
+
+        composable("home") {
+            HomeScreen(navController, storeViewModel)
         }
     }
 }

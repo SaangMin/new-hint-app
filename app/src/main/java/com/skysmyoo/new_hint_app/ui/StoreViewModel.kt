@@ -17,9 +17,22 @@ class StoreViewModel @Inject constructor(
     private val _storeModel = MutableStateFlow<StoreModel?>(null)
     val storeModel: StateFlow<StoreModel?> = _storeModel
 
+    private val _isSuccessFindStore = MutableStateFlow<Boolean>(false)
+    val isSuccessFindStore: StateFlow<Boolean> = _isSuccessFindStore
+
     fun findStore(code: String) {
         viewModelScope.launch {
             val storeModel = repository.findStore(code)
+            if (storeModel != null) {
+                _storeModel.value = storeModel
+                _isSuccessFindStore.value = true
+            }
+        }
+    }
+
+    fun findStoreFromLocal() {
+        viewModelScope.launch {
+            val storeModel = repository.findStoreFromLocal()
             _storeModel.value = storeModel
         }
     }
