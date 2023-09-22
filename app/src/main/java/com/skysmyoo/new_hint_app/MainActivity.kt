@@ -3,44 +3,44 @@ package com.skysmyoo.new_hint_app
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
+import androidx.activity.viewModels
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import com.skysmyoo.new_hint_app.ui.theme.NewhintappTheme
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import com.skysmyoo.new_hint_app.ui.HomeScreen
+import com.skysmyoo.new_hint_app.ui.LoginScreen
+import com.skysmyoo.new_hint_app.ui.StoreViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+
+    private val storeViewModel: StoreViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            NewhintappTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
-                    Greeting("Android")
-                }
-            }
+            Navigation(storeViewModel)
         }
     }
 }
 
 @Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
+fun Navigation(
+    storeViewModel: StoreViewModel
+) {
+    val navController = rememberNavController()
 
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    NewhintappTheme {
-        Greeting("Android")
+    NavHost(
+        navController = navController,
+        startDestination = if (storeViewModel.getStoreCode().isNullOrEmpty()) "login" else "home"
+    ) {
+        composable("login") {
+            LoginScreen(navController, storeViewModel)
+        }
+
+        composable("home") {
+            HomeScreen(navController, storeViewModel)
+        }
     }
 }
