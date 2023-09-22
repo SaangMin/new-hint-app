@@ -37,7 +37,7 @@ class HintViewModel @Inject constructor(
         code: String,
     ) {
         viewModelScope.launch {
-            val savedHintModel = repository.getHint(theme, code)
+            val savedHintModel = repository.getHint(theme, code.uppercase())
             if (savedHintModel == null) {
                 _isNotFoundHint.value = true
                 delay(100)
@@ -55,7 +55,7 @@ class HintViewModel @Inject constructor(
         code: String,
     ) {
         viewModelScope.launch {
-            val savedHintModel = repository.getHint(theme, code)
+            val savedHintModel = repository.getHint(theme, code.uppercase())
             if (savedHintModel == null) {
                 _isNotFoundHint.value = true
                 delay(100)
