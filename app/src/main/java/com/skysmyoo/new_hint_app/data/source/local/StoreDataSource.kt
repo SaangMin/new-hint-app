@@ -27,4 +27,9 @@ class StoreDataSource @Inject constructor(
         return preferencesManager.getStoreCode()
     }
 
+    suspend fun clearLocalData() {
+        preferencesManager.clearStoreCode()
+        storeModelDao.deleteStore()
+    }
+
 }

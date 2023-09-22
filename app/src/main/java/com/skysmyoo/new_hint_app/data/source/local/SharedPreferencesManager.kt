@@ -9,6 +9,10 @@ class SharedPreferencesManager @Inject constructor(context: Context) {
     private val sharedPreferences: SharedPreferences =
         context.getSharedPreferences(Constants.KEY_MY_PREFERENCES, Context.MODE_PRIVATE)
 
+    fun clearStoreCode() {
+        sharedPreferences.edit().remove(Constants.KEY_STORE_CODE).apply()
+    }
+
     fun setStoreCode(title: String) {
         sharedPreferences.edit().putString(Constants.KEY_STORE_CODE, title).apply()
     }

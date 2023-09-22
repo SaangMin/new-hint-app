@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.skysmyoo.new_hint_app.data.model.StoreModel
 import com.skysmyoo.new_hint_app.data.source.repository.StoreRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -20,24 +21,22 @@ class StoreViewModel @Inject constructor(
     private val _isSuccessFindStore = MutableStateFlow<Boolean>(false)
     val isSuccessFindStore: StateFlow<Boolean> = _isSuccessFindStore
 
+    private val _isSuccessClearLocalData = MutableStateFlow(false)
+    val isSuccessClearLocalData: StateFlow<Boolean> = _isSuccessClearLocalData
+
     fun findStore(code: String) {
         viewModelScope.launch {
             val storeModel = repository.findStore(code)
             if (storeModel != null) {
                 _storeModel.value = storeModel
                 _isSuccessFindStore.value = true
+                delay(100)
+                _isSuccessClearLocalData.value = false
             }
         }
     }
 
     fun findStoreFromLocal() {
-        viewModelScope.launch {
-            val storeModel = repository.findStoreFromLocal()
-            _storeModel.value = storeModel
-        }
-    }
-
-    fun getStore() {
         viewModelScope.launch {
             val storeModel = repository.getStore()
             _storeModel.value = storeModel
@@ -51,6 +50,15 @@ class StoreViewModel @Inject constructor(
     fun putSample() {
         viewModelScope.launch {
             repository.putSample()
+        }
+    }
+
+    fun clearLocalData() {
+        viewModelScope.launch {
+            repository.clearLocalData()
+            _isSuccessClearLocalData.value = true
+            delay(100)
+            _isSuccessClearLocalData.value = false
         }
     }
 }

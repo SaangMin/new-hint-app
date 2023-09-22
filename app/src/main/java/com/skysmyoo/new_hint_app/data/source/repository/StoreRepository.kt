@@ -24,15 +24,15 @@ class StoreRepository @Inject constructor(
         return storeModel
     }
 
-    suspend fun findStoreFromLocal(): StoreModel {
-        return localDataSource.getStore()
-    }
-
     fun getStoreCode(): String? {
         return localDataSource.getStoreCode()
     }
 
     suspend fun putSample() {
         remoteDataSource.putSample(SampleData.sampleStore)
+    }
+
+    suspend fun clearLocalData() {
+        localDataSource.clearLocalData()
     }
 }
