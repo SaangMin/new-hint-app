@@ -78,6 +78,8 @@ class HintViewModel @Inject constructor(
     fun resetData() {
         _foundedHint.value = null
         _savedTheme.value = null
+        _isShowHint.value = false
+        _isShowProgress.value = false
     }
 
     fun closeHint() {
