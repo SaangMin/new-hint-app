@@ -1,8 +1,8 @@
 package com.skysmyoo.new_hint_app.di
 
+import com.skysmyoo.new_hint_app.BuildConfig
 import com.skysmyoo.new_hint_app.data.source.remote.ApiClient
 import com.skysmyoo.new_hint_app.data.source.remote.response.ApiCallAdapterFactory
-import com.skysmyoo.rshintapp.BuildConfig
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

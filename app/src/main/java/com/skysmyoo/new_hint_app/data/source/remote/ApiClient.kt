@@ -14,5 +14,5 @@ interface ApiClient {
     ): ApiResponse<Map<String, String>>
 
     @GET("stores.json")
-    suspend fun getStores(): Map<String, StoreModel?>
+    suspend fun getStores(): ApiResponse<Map<String, StoreModel?>>
 }

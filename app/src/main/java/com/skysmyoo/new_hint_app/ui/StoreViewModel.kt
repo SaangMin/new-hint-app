@@ -24,15 +24,27 @@ class StoreViewModel @Inject constructor(
     private val _isSuccessClearLocalData = MutableStateFlow(false)
     val isSuccessClearLocalData: StateFlow<Boolean> = _isSuccessClearLocalData
 
+    private val _isLoading = MutableStateFlow<Boolean>(false)
+    val isLoading: StateFlow<Boolean> = _isLoading
+
+    private val _isNetworkError = MutableStateFlow<Boolean>(false)
+    val isNetworkError: StateFlow<Boolean> = _isNetworkError
+
     fun findStore(code: String) {
         viewModelScope.launch {
+            _isLoading.value = true
             val storeModel = repository.findStore(code)
             if (storeModel != null) {
                 _storeModel.value = storeModel
                 _isSuccessFindStore.value = true
                 delay(100)
                 _isSuccessFindStore.value = false
+            } else {
+                _isNetworkError.value = true
+                delay(100)
+                _isNetworkError.value = false
             }
+            _isLoading.value = false
         }
     }
 

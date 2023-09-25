@@ -20,6 +20,8 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
@@ -27,6 +29,8 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
@@ -50,68 +54,73 @@ fun LoginScreen(navController: NavController, viewModel: StoreViewModel) {
 
     val storeModel by viewModel.storeModel.collectAsState()
     val isSuccessFindStore by viewModel.isSuccessFindStore.collectAsState()
+    val isLoading by viewModel.isLoading.collectAsState()
+    val isNetworkError by viewModel.isNetworkError.collectAsState()
+
+    val scope = rememberCoroutineScope()
+    val snackbarHostState = remember { SnackbarHostState() }
 
     LaunchedEffect(Unit) {
         viewModel.findStoreFromLocal()
     }
 
-    if(storeModel != null) {
-        navController.navigate("home")
-    }
-
-    if(isSuccessFindStore) {
-        navController.navigate("home")
-    }
-
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(ServeColor),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
-    ) {
-
-        OutlinedTextField(
-            value = inputStoreCode.value,
-            placeholder = { Text(text = "지점 코드를 입력해주세요.") },
-            colors = TextFieldDefaults.outlinedTextFieldColors(
-                containerColor = Color.White
-            ),
-            onValueChange = { inputStoreCode.value = it },
-            modifier = Modifier
-                .padding(8.dp)
-                .wrapContentHeight()
-                .fillMaxWidth(),
-            keyboardOptions = KeyboardOptions(
-                keyboardType = KeyboardType.Text,
-                imeAction = ImeAction.Done,
-            ),
-            keyboardActions = KeyboardActions(onDone = {
-                keyboardController?.hide()
-            }),
-            maxLines = 1,
-        )
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        Button(
-            onClick = {
-                viewModel.findStore(inputStoreCode.value)
-            },
-            colors = ButtonDefaults.buttonColors(MainColor)
-        ) {
-            Text(text = "입장하기", color = Color.White, fontWeight = FontWeight.Bold)
+    LaunchedEffect(isNetworkError){
+        if(isNetworkError) {
+            snackbarHostState.showSnackbar(message = "정확한 코드를 입력했는지 확인해주세요. 혹은 네트워크 연결을 확인해주세요.")
         }
+    }
 
-        Spacer(modifier = Modifier.padding(24.dp))
+    if (storeModel != null) {
+        navController.navigate("home")
+    }
 
-        Button(
-            onClick = {
-                viewModel.putSample()
-            },
-            colors = ButtonDefaults.buttonColors(MainColor)
+    if (isSuccessFindStore) {
+        navController.navigate("home")
+    }
+
+    if (isLoading) {
+        LoadingView()
+    } else {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(ServeColor),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
         ) {
-            Text(text = "Test", color = Color.White, fontWeight = FontWeight.Bold)
+
+            OutlinedTextField(
+                value = inputStoreCode.value,
+                placeholder = { Text(text = "지점 코드를 입력해주세요.") },
+                colors = TextFieldDefaults.outlinedTextFieldColors(
+                    containerColor = Color.White
+                ),
+                onValueChange = { inputStoreCode.value = it },
+                modifier = Modifier
+                    .padding(8.dp)
+                    .wrapContentHeight()
+                    .fillMaxWidth(),
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Text,
+                    imeAction = ImeAction.Done,
+                ),
+                keyboardActions = KeyboardActions(onDone = {
+                    keyboardController?.hide()
+                }),
+                maxLines = 1,
+            )
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            Button(
+                onClick = {
+                    viewModel.findStore(inputStoreCode.value)
+                },
+                colors = ButtonDefaults.buttonColors(MainColor)
+            ) {
+                Text(text = "입장하기", color = Color.White, fontWeight = FontWeight.Bold)
+            }
+            SnackbarHost(snackbarHostState)
         }
     }
 }
