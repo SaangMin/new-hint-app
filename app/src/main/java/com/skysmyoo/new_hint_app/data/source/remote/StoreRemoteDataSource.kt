@@ -2,7 +2,6 @@ package com.skysmyoo.new_hint_app.data.source.remote
 
 import android.util.Log
 import com.skysmyoo.new_hint_app.data.model.StoreModel
-import com.skysmyoo.new_hint_app.data.source.remote.response.ApiResponse
 import com.skysmyoo.new_hint_app.data.source.remote.response.ApiResultError
 import com.skysmyoo.new_hint_app.data.source.remote.response.ApiResultException
 import com.skysmyoo.new_hint_app.data.source.remote.response.ApiResultSuccess
@@ -31,9 +30,5 @@ class StoreRemoteDataSource @Inject constructor(private val apiClient: ApiClient
                 null
             }
         }
-    }
-
-    suspend fun putSample(storeModel: StoreModel): ApiResponse<Map<String, String>> {
-        return apiClient.putSample(storeModel)
     }
 }

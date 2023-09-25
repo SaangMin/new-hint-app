@@ -59,12 +59,6 @@ class StoreViewModel @Inject constructor(
         return repository.getStoreCode()
     }
 
-    fun putSample() {
-        viewModelScope.launch {
-            repository.putSample()
-        }
-    }
-
     fun clearLocalData() {
         viewModelScope.launch {
             repository.clearLocalData()

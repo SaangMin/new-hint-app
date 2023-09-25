@@ -5,7 +5,6 @@ import com.skysmyoo.new_hint_app.data.model.StoreModel
 import com.skysmyoo.new_hint_app.data.model.ThemeModel
 import com.skysmyoo.new_hint_app.data.source.local.StoreDataSource
 import com.skysmyoo.new_hint_app.data.source.remote.StoreRemoteDataSource
-import com.skysmyoo.new_hint_app.utils.SampleData
 import javax.inject.Inject
 
 class StoreRepository @Inject constructor(
@@ -28,10 +27,6 @@ class StoreRepository @Inject constructor(
 
     fun getStoreCode(): String? {
         return localDataSource.getStoreCode()
-    }
-
-    suspend fun putSample() {
-        remoteDataSource.putSample(SampleData.sampleStore)
     }
 
     suspend fun clearLocalData() {
