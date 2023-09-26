@@ -45,6 +45,7 @@ class HintViewModel @Inject constructor(
                 return@launch
             } else {
                 _foundedHint.value = savedHintModel
+                _isShowProgress.value = false
                 _isShowHint.value = true
             }
         }
@@ -63,6 +64,7 @@ class HintViewModel @Inject constructor(
                 return@launch
             } else {
                 _foundedHint.value = savedHintModel
+                _isShowHint.value = false
                 _isShowProgress.value = true
             }
         }
