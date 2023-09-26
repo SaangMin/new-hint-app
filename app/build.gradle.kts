@@ -28,6 +28,7 @@ android {
         setProperty("archivesBaseName", "${applicationId}-v${versionName}")
 
         buildConfigField("String", "BASE_URL", properties["base_url"].toString())
+        buildConfigField("String", "MASTER_PASSWORD", properties["master_password"].toString())
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
