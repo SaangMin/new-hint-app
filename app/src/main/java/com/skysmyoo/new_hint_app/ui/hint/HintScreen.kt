@@ -71,7 +71,7 @@ import androidx.navigation.NavController
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.skysmyoo.new_hint_app.R
-import com.skysmyoo.new_hint_app.ui.home.InputPasswordDialog
+import com.skysmyoo.new_hint_app.ui.StorePasswordDialog
 import com.skysmyoo.new_hint_app.ui.theme.HintBgColor
 import com.skysmyoo.new_hint_app.ui.theme.MainColor
 import com.skysmyoo.new_hint_app.ui.theme.ServeColor
@@ -142,7 +142,7 @@ fun HintScreen(
     }
 
     if (isExitTheme) {
-        InputPasswordDialog(
+        StorePasswordDialog(
             onDismissRequest = {
                 isExitTheme = false
             },
