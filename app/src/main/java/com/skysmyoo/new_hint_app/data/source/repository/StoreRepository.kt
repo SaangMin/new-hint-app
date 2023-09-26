@@ -25,6 +25,7 @@ class StoreRepository @Inject constructor(
     }
 
     suspend fun setLocalData(storeModel: StoreModel) {
+        localDataSource.deleteStore()
         localDataSource.insertNewStore(storeModel)
         localDataSource.setStoreCode(storeModel.code)
     }
