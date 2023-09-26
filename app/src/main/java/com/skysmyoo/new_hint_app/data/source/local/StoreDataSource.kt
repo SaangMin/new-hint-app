@@ -32,4 +32,12 @@ class StoreDataSource @Inject constructor(
         storeModelDao.deleteStore()
     }
 
+    fun setStorePassword(password: String) {
+        preferencesManager.setPassword(password)
+    }
+
+    fun getStorePassword(): String? {
+        return preferencesManager.getPassword()
+    }
+
 }

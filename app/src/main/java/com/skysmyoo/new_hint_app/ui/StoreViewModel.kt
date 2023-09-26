@@ -67,4 +67,12 @@ class StoreViewModel @Inject constructor(
             _isSuccessClearLocalData.value = false
         }
     }
+
+    fun setLocalData(storeModel: StoreModel) {
+        viewModelScope.launch {
+            _isLoading.value = true
+            repository.setLocalData(storeModel)
+            _isLoading.value = false
+        }
+    }
 }

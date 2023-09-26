@@ -26,6 +26,6 @@ class SharedPreferencesManager @Inject constructor(context: Context) {
     }
 
     fun getPassword(): String? {
-        return sharedPreferences.getString(Constants.KEY_PASSWORD, "9999")
+        return sharedPreferences.getString(Constants.KEY_PASSWORD, "0945")
     }
 }

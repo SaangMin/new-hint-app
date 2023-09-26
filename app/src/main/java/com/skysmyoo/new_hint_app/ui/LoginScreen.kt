@@ -32,6 +32,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -49,6 +50,7 @@ import com.skysmyoo.new_hint_app.ui.theme.ServeColor
 @Composable
 fun LoginScreen(navController: NavController, viewModel: StoreViewModel) {
 
+    var isStorePasswordDialogShown by rememberSaveable { mutableStateOf(false) }
     val inputStoreCode = rememberSaveable { mutableStateOf("") }
     val keyboardController = LocalSoftwareKeyboardController.current
 
@@ -64,18 +66,27 @@ fun LoginScreen(navController: NavController, viewModel: StoreViewModel) {
         viewModel.findStoreFromLocal()
     }
 
-    LaunchedEffect(isNetworkError){
-        if(isNetworkError) {
+    LaunchedEffect(isNetworkError) {
+        if (isNetworkError) {
             snackbarHostState.showSnackbar(message = "정확한 코드를 입력했는지 확인해주세요. 혹은 네트워크 연결을 확인해주세요.")
         }
     }
 
-    if (storeModel != null) {
-        navController.navigate("home")
+    if (isSuccessFindStore) {
+        isStorePasswordDialogShown = true
     }
 
-    if (isSuccessFindStore) {
-        navController.navigate("home")
+    if (isStorePasswordDialogShown) {
+        StorePasswordDialog(
+            onDismissRequest = {
+                isStorePasswordDialogShown = false
+            },
+            onCorrectPassword = {
+                isStorePasswordDialogShown = false
+                viewModel.setLocalData(storeModel!!)
+                navController.navigate("home")
+            }
+        )
     }
 
     if (isLoading) {
