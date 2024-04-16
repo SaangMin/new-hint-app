@@ -75,6 +75,7 @@ import com.skysmyoo.new_hint_app.R
 import com.skysmyoo.new_hint_app.ui.StorePasswordDialog
 import com.skysmyoo.new_hint_app.ui.theme.HintBgColor
 import com.skysmyoo.new_hint_app.ui.theme.MainColor
+import com.skysmyoo.new_hint_app.ui.theme.ProgressBgColor
 import com.skysmyoo.new_hint_app.ui.theme.ServeColor
 import com.skysmyoo.new_hint_app.ui.theme.ThemeColor
 import com.skysmyoo.new_hint_app.utils.TimeFormat.formatTime
@@ -291,19 +292,19 @@ fun HintScreen(
                         .height(IntrinsicSize.Max)
                         .verticalScroll(rememberScrollState())
                         .clip(RoundedCornerShape(5.dp))
-                        .background(color = HintBgColor)
-                        .padding(24.dp),
+                        .background(color = HintBgColor),
+//                        .padding(24.dp),
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.Center,
                 ) {
-                    Text(
-                        text = hint?.hintContent ?: "",
-                        modifier = Modifier
-                            .padding(16.dp),
-                        fontSize = 16.sp
-                    )
+//                    Text(
+//                        text = hint?.hintContent ?: "",
+//                        modifier = Modifier
+//                            .padding(16.dp),
+//                        fontSize = 16.sp
+//                    )
 
-                    Spacer(modifier = Modifier.padding(16.dp))
+//                    Spacer(modifier = Modifier.padding(16.dp))
 
                     hint?.hintImage?.let {
                         GlideImage(
@@ -324,26 +325,28 @@ fun HintScreen(
                             .fillMaxHeight()
                     )
 
-                    Column(
-                        verticalArrangement = Arrangement.Bottom,
-                        horizontalAlignment = Alignment.CenterHorizontally,
+                    Row(
+                        horizontalArrangement = Arrangement.Center,
+                        verticalAlignment = Alignment.CenterVertically,
                     ) {
                         Button(
                             onClick = {
                                 isShowResult = true
                             },
-                            colors = ButtonDefaults.buttonColors(MainColor)
+                            colors = ButtonDefaults.buttonColors(ServeColor)
                         ) {
-                            Text(text = "정답 보기", color = Color.White, fontWeight = FontWeight.Bold)
+                            Text(text = "정답 보기", color = Color.Black, fontWeight = FontWeight.Bold)
                         }
+
+                        Spacer(modifier = Modifier.padding(16.dp))
 
                         Button(
                             onClick = {
                                 viewModel.closeHint()
                             },
-                            colors = ButtonDefaults.buttonColors(MainColor)
+                            colors = ButtonDefaults.buttonColors(ServeColor)
                         ) {
-                            Text(text = "닫기", color = Color.White, fontWeight = FontWeight.Bold)
+                            Text(text = "돌아가기", color = Color.Black, fontWeight = FontWeight.Bold)
                         }
                     }
                 }
@@ -355,7 +358,7 @@ fun HintScreen(
                         .fillMaxWidth()
                         .wrapContentHeight()
                         .clip(RoundedCornerShape(5.dp))
-                        .background(color = HintBgColor)
+                        .background(color = ProgressBgColor)
                         .padding(24.dp),
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.Center,
@@ -389,16 +392,18 @@ fun HintScreen(
                     .fillMaxHeight()
             )
 
-            Box(
-                contentAlignment = Alignment.BottomCenter,
-            ) {
-                Button(
-                    onClick = {
-                        isExitTheme = true
-                    },
-                    colors = ButtonDefaults.buttonColors(Color.Red)
+            if (!isShowHint) {
+                Box(
+                    contentAlignment = Alignment.BottomCenter,
                 ) {
-                    Text(text = "종료", color = Color.Black, fontWeight = FontWeight.Bold)
+                    Button(
+                        onClick = {
+                            isExitTheme = true
+                        },
+                        colors = ButtonDefaults.buttonColors(Color.Red)
+                    ) {
+                        Text(text = "종료", color = Color.Black, fontWeight = FontWeight.Bold)
+                    }
                 }
             }
         }

@@ -53,19 +53,18 @@ fun ResultDialog(
                 .height(IntrinsicSize.Max)
                 .verticalScroll(rememberScrollState())
                 .clip(RoundedCornerShape(5.dp))
-                .background(color = ResultBgColor)
-                .padding(8.dp),
+                .background(color = ResultBgColor),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center,
         ) {
-            Text(
-                text = hint.resultContent,
-                modifier = Modifier
-                    .padding(8.dp),
-                fontSize = 16.sp
-            )
-
-            Spacer(modifier = Modifier.padding(8.dp))
+//            Text(
+//                text = hint.resultContent,
+//                modifier = Modifier
+//                    .padding(8.dp),
+//                fontSize = 16.sp
+//            )
+//
+//            Spacer(modifier = Modifier.padding(8.dp))
 
             hint.resultImage?.let {
                 GlideImage(
