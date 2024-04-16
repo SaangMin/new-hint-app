@@ -10,7 +10,6 @@ import com.squareup.moshi.JsonClass
 )
 @JsonClass(generateAdapter = true)
 data class ThemeModel (
-    @PrimaryKey(autoGenerate = true) val uid: Int = 0,
     @ColumnInfo(name = "themeTitle") val themeTitle: String,
     @ColumnInfo(name = "themeTime")val themeTime: Int,
     @ColumnInfo(name = "hintList")val hintList: List<HintModel> = emptyList(),

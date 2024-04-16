@@ -41,8 +41,8 @@ class StoreRepository @Inject constructor(
         return theme.hintList.find { it.code == code }
     }
 
-    suspend fun getTheme(uid: Int): ThemeModel? {
+    suspend fun getTheme(title: String): ThemeModel? {
         val store = localDataSource.getStore()
-        return store.themeList.find { it.uid == uid }
+        return store.themeList.find { it.themeTitle == title }
     }
 }

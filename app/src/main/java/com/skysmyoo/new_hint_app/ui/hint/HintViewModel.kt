@@ -70,9 +70,9 @@ class HintViewModel @Inject constructor(
         }
     }
 
-    fun findTheme(uid: String) {
+    fun findTheme(title: String) {
         viewModelScope.launch {
-            val savedThemeModel = repository.getTheme(uid.toInt())
+            val savedThemeModel = repository.getTheme(title)
             _savedTheme.value = savedThemeModel
         }
     }

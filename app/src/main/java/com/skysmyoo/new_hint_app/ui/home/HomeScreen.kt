@@ -122,13 +122,15 @@ fun HomeScreen(navController: NavController, viewModel: StoreViewModel) {
             LazyColumn(
                 contentPadding = PaddingValues(16.dp),
                 verticalArrangement = Arrangement.spacedBy(16.dp),
+                modifier = Modifier
+                    .height(600.dp)
             ) {
                 items(storeModel?.themeList ?: emptyList()) { theme ->
                     Column {
                         ThemeItem(
                             theme = theme,
                             onClick = {
-                                navController.navigate("hintScreen/${theme.uid}")
+                                navController.navigate("hintScreen/${theme.themeTitle}")
                             },
                         )
                     }

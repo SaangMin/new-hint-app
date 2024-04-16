@@ -48,11 +48,11 @@ fun Navigation(
             HomeScreen(navController, storeViewModel)
         }
 
-        composable("hintScreen/{themeId}") { backStackEntry ->
+        composable("hintScreen/{title}") { backStackEntry ->
             HintScreen(
                 navController = navController,
                 viewModel = hintViewModel,
-                themeId = backStackEntry.arguments?.getString("themeId") ?: ""
+                title = backStackEntry.arguments?.getString("title") ?: ""
             )
         }
     }

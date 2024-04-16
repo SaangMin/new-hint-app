@@ -11,7 +11,6 @@ import java.io.Serializable
 )
 @JsonClass(generateAdapter = true)
 data class HintModel (
-    @PrimaryKey(autoGenerate = true) val uid: Int = 0,
     @ColumnInfo(name = "code") val code: String,
     @ColumnInfo(name = "hintName") val hintName: String,
     @ColumnInfo(name = "hintContent") val hintContent: String,

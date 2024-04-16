@@ -90,7 +90,7 @@ import kotlinx.coroutines.launch
 fun HintScreen(
     navController: NavController,
     viewModel: HintViewModel,
-    themeId: String,
+    title: String,
 ) {
 
     val inputHintCode = rememberSaveable { mutableStateOf("") }
@@ -120,7 +120,7 @@ fun HintScreen(
     }
 
     LaunchedEffect(Unit) {
-        viewModel.findTheme(themeId)
+        viewModel.findTheme(title)
     }
 
     val remainingSeconds = countdownTimer(theme?.themeTime ?: 0, isStartTheme)
