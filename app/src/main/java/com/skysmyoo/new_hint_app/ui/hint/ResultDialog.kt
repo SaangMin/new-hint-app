@@ -6,6 +6,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -25,6 +26,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
@@ -48,31 +50,31 @@ fun ResultDialog(
             modifier = Modifier
                 .wrapContentSize()
                 .fillMaxWidth()
-                .height(400.dp)
+                .height(IntrinsicSize.Max)
                 .verticalScroll(rememberScrollState())
                 .clip(RoundedCornerShape(5.dp))
                 .background(color = ResultBgColor)
-                .padding(24.dp),
+                .padding(8.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center,
         ) {
             Text(
                 text = hint.resultContent,
                 modifier = Modifier
-                    .padding(16.dp),
+                    .padding(8.dp),
                 fontSize = 16.sp
             )
 
-            Spacer(modifier = Modifier.padding(16.dp))
+            Spacer(modifier = Modifier.padding(8.dp))
 
             hint.resultImage?.let {
                 GlideImage(
                     model = it.toUri(),
                     contentDescription = null,
-                    contentScale = ContentScale.Crop,
+                    contentScale = ContentScale.Fit,
                     modifier = Modifier
                         .padding(8.dp)
-                        .height(200.dp)
+                        .height(720.dp)
                 )
             }
 

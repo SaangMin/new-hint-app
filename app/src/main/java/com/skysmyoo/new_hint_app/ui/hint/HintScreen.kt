@@ -11,6 +11,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -287,7 +288,7 @@ fun HintScreen(
                     modifier = Modifier
                         .wrapContentSize()
                         .fillMaxWidth()
-                        .height(400.dp)
+                        .height(IntrinsicSize.Max)
                         .verticalScroll(rememberScrollState())
                         .clip(RoundedCornerShape(5.dp))
                         .background(color = HintBgColor)
@@ -308,10 +309,10 @@ fun HintScreen(
                         GlideImage(
                             model = it.toUri(),
                             contentDescription = null,
-                            contentScale = ContentScale.Crop,
+                            contentScale = ContentScale.Fit,
                             modifier = Modifier
                                 .padding(8.dp)
-                                .height(200.dp)
+                                .height(720.dp)
                         )
                     }
 

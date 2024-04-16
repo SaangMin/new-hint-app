@@ -13,6 +13,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "New-hint-app"
+rootProject.name = "new-hint-app"
 include(":app")
  
