@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -70,10 +71,9 @@ fun ResultDialog(
                 GlideImage(
                     model = it.toUri(),
                     contentDescription = null,
-                    contentScale = ContentScale.Fit,
                     modifier = Modifier
                         .padding(8.dp)
-                        .height(720.dp)
+                        .fillMaxSize()
                 )
             }
 

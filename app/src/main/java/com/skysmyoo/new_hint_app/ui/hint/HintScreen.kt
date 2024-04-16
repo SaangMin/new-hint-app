@@ -310,10 +310,9 @@ fun HintScreen(
                         GlideImage(
                             model = it.toUri(),
                             contentDescription = null,
-                            contentScale = ContentScale.Fit,
                             modifier = Modifier
                                 .padding(8.dp)
-                                .height(720.dp)
+                                .fillMaxSize()
                         )
                     }
 
