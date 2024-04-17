@@ -123,7 +123,7 @@ fun HomeScreen(navController: NavController, viewModel: StoreViewModel) {
                 contentPadding = PaddingValues(16.dp),
                 verticalArrangement = Arrangement.spacedBy(16.dp),
                 modifier = Modifier
-                    .height(600.dp)
+                    .height(400.dp)
             ) {
                 items(storeModel?.themeList ?: emptyList()) { theme ->
                     Column {

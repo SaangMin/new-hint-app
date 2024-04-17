@@ -19,6 +19,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.rememberScrollState
@@ -44,6 +45,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -107,6 +109,7 @@ fun HintScreen(
     val isNotFoundHint by viewModel.isNotFoundHint.collectAsState()
     val isShowHint by viewModel.isShowHint.collectAsState()
     val isShowProgress by viewModel.isShowProgress.collectAsState()
+    val hintCount by viewModel.hintCount.collectAsState()
 
     val lifecycleOwner = LocalLifecycleOwner.current
     val lifecycle = lifecycleOwner.lifecycle
@@ -395,13 +398,32 @@ fun HintScreen(
                 Box(
                     contentAlignment = Alignment.BottomCenter,
                 ) {
-                    Button(
-                        onClick = {
-                            isExitTheme = true
-                        },
-                        colors = ButtonDefaults.buttonColors(Color.Red)
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth(),
+                        horizontalArrangement = Arrangement.Center,
+                        verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Text(text = "종료", color = Color.Black, fontWeight = FontWeight.Bold)
+                        Button(
+                            onClick = {
+                                isExitTheme = true
+                            },
+                            colors = ButtonDefaults.buttonColors(Color.Red),
+                            modifier = Modifier
+                                .padding(10.dp)
+                        ) {
+                            Text(text = "종료", color = Color.Black, fontWeight = FontWeight.Bold)
+                        }
+                        
+                        Spacer(modifier = Modifier.width(10.dp))
+
+                        Text(
+                            text = "힌트 사용 : $hintCount",
+                            color = Color.White,
+                            fontSize = 24.sp,
+                            textAlign = TextAlign.End,
+                        )
+
                     }
                 }
             }
@@ -430,7 +452,7 @@ fun countdownTimer(
     initialSeconds: Int,
     isRunning: Boolean,
 ): State<Int> {
-    val remainingSeconds = rememberSaveable { mutableStateOf(initialSeconds) }
+    val remainingSeconds = rememberSaveable { mutableIntStateOf(initialSeconds) }
 
     val context = LocalContext.current
     val vibrator = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
@@ -443,12 +465,12 @@ fun countdownTimer(
 
     LaunchedEffect(isRunning) {
         if (isRunning) {
-            remainingSeconds.value = initialSeconds
-            while (remainingSeconds.value > 0) {
+            remainingSeconds.intValue = initialSeconds
+            while (remainingSeconds.intValue > 0) {
                 delay(1000)
-                remainingSeconds.value -= 1
+                remainingSeconds.intValue -= 1
             }
-            if (remainingSeconds.value <= 0) {
+            if (remainingSeconds.intValue <= 0) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                     vibrator.vibrate(
                         VibrationEffect.createOneShot(
