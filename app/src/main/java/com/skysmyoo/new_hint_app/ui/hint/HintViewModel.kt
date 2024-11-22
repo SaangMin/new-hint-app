@@ -32,6 +32,9 @@ class HintViewModel @Inject constructor(
     private val _isShowProgress = MutableStateFlow(false)
     val isShowProgress: StateFlow<Boolean> = _isShowProgress
 
+    private val _isWifiConnected = MutableStateFlow(false)
+    val isWifiConnected: StateFlow<Boolean> = _isWifiConnected
+
     private val _hintCount = MutableStateFlow<Int>(0)
     val hintCount: StateFlow<Int> = _hintCount
 
@@ -95,5 +98,9 @@ class HintViewModel @Inject constructor(
 
     fun closeProgress() {
         _isShowProgress.value = false
+    }
+
+    fun connectWifi() {
+        _isWifiConnected.value = !_isWifiConnected.value
     }
 }

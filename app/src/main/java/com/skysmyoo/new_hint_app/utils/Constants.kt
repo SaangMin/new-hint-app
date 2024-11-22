@@ -1,5 +1,7 @@
 package com.skysmyoo.new_hint_app.utils
 
+import com.skysmyoo.new_hint_app.data.model.ThemeModel
+
 object Constants {
     const val KEY_MY_PREFERENCES = "key_my_preferences"
     const val KEY_STORE_CODE = "key_store_code"
@@ -16,4 +18,5 @@ object Constants {
     const val WRONG_HINT_CODE_MSG = "잘못된 코드입니다."
     const val KEY_LAST_PHONE_NUMBER = "key_last_phone_number"
     const val PATH_STORES = "stores"
+    val SAMPLE_THEME = ThemeModel(themeTitle = "인도네시아", themeTime = 3600, hintList = emptyList())
 }

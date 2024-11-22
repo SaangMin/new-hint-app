@@ -3,6 +3,7 @@ package com.skysmyoo.new_hint_app.ui.home
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -43,6 +44,7 @@ import com.skysmyoo.new_hint_app.ui.StoreViewModel
 import com.skysmyoo.new_hint_app.ui.components.ThemeItem
 import com.skysmyoo.new_hint_app.ui.theme.MainColor
 import com.skysmyoo.new_hint_app.ui.theme.ServeColor
+import com.skysmyoo.new_hint_app.ui.theme.ThemeColor
 import com.skysmyoo.new_hint_app.ui.theme.TitleColor
 
 @Composable
@@ -136,45 +138,56 @@ fun HomeScreen(navController: NavController, viewModel: StoreViewModel) {
                     }
                 }
             }
-        }
 
-        Box(
-            modifier = Modifier
-                .weight(1f)
-                .fillMaxHeight()
-        )
+            Text(
+                text = "인도네시아",
+                color = ThemeColor,
+                fontSize = 24.sp,
+                fontWeight = FontWeight.Bold,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.clickable {
+                    navController.navigate("agentAssistant/인도네시아")
+                }
+            )
 
-        Box(
-            contentAlignment = Alignment.BottomCenter
-        ) {
-            Button(
-                onClick = {
-                    isInputPasswordDialogShown = true
-                },
-                colors = ButtonDefaults.buttonColors(containerColor = MainColor),
+            Box(
                 modifier = Modifier
-                    .padding(vertical = 2.dp)
+                    .weight(1f)
+                    .fillMaxHeight()
+            )
+
+            Box(
+                contentAlignment = Alignment.BottomCenter
             ) {
-                Text(
-                    text = "테마 코드 입력창으로 돌아가기",
-                    color = Color.White,
-                )
+                Button(
+                    onClick = {
+                        isInputPasswordDialogShown = true
+                    },
+                    colors = ButtonDefaults.buttonColors(containerColor = MainColor),
+                    modifier = Modifier
+                        .padding(vertical = 2.dp)
+                ) {
+                    Text(
+                        text = "테마 코드 입력창으로 돌아가기",
+                        color = Color.White,
+                    )
+                }
             }
+            Spacer(modifier = Modifier.height(16.dp))
         }
-        Spacer(modifier = Modifier.height(16.dp))
-    }
 
-    DisposableEffect(key1 = true) {
-        val observer = LifecycleEventObserver { _, event ->
-            if (event == Lifecycle.Event.ON_RESUME) {
-                backDispatcher?.addCallback(callback)
+        DisposableEffect(key1 = true) {
+            val observer = LifecycleEventObserver { _, event ->
+                if (event == Lifecycle.Event.ON_RESUME) {
+                    backDispatcher?.addCallback(callback)
+                }
             }
-        }
-        lifecycle.addObserver(observer)
+            lifecycle.addObserver(observer)
 
-        onDispose {
-            lifecycle.removeObserver(observer)
-            callback.remove()
+            onDispose {
+                lifecycle.removeObserver(observer)
+                callback.remove()
+            }
         }
     }
 }

@@ -10,6 +10,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.skysmyoo.new_hint_app.ui.LoginScreen
 import com.skysmyoo.new_hint_app.ui.StoreViewModel
+import com.skysmyoo.new_hint_app.ui.hint.AgentAssistantScreen
 import com.skysmyoo.new_hint_app.ui.hint.HintScreen
 import com.skysmyoo.new_hint_app.ui.hint.HintViewModel
 import com.skysmyoo.new_hint_app.ui.home.HomeScreen
@@ -50,6 +51,14 @@ fun Navigation(
 
         composable("hintScreen/{title}") { backStackEntry ->
             HintScreen(
+                navController = navController,
+                viewModel = hintViewModel,
+                title = backStackEntry.arguments?.getString("title") ?: ""
+            )
+        }
+
+        composable("agentAssistant/{title}") { backStackEntry ->
+            AgentAssistantScreen(
                 navController = navController,
                 viewModel = hintViewModel,
                 title = backStackEntry.arguments?.getString("title") ?: ""
