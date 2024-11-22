@@ -165,7 +165,7 @@ fun AgentAssistantScreen(
             onDismissRequest = {
                 viewModel.closeCall()
             },
-            viewmodel = viewModel
+            viewModel = viewModel
         )
     }
 

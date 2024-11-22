@@ -44,6 +44,12 @@ class HintViewModel @Inject constructor(
     private val _isShowCall = MutableStateFlow(false)
     val isShowCall: StateFlow<Boolean> = _isShowCall
 
+    private val _usableCall = MutableStateFlow(false)
+    val usableCall: StateFlow<Boolean> = _usableCall
+
+    private val _isShowCallResult = MutableStateFlow(false)
+    val isShowCallResult: StateFlow<Boolean> = _isShowCallResult
+
     fun findHint(
         theme: ThemeModel,
         code: String,
@@ -124,5 +130,17 @@ class HintViewModel @Inject constructor(
 
     fun closeCall() {
         _isShowCall.value = false
+    }
+
+    fun setUsableCall() {
+        _usableCall.value = !_usableCall.value
+    }
+
+    fun openCallResult() {
+        _isShowCallResult.value = true
+    }
+
+    fun closeCallResult() {
+        _isShowCallResult.value = false
     }
 }
