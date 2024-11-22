@@ -100,7 +100,6 @@ fun AgentAssistantScreen(
     var isStartTheme by rememberSaveable { mutableStateOf(false) }
     var isShowResult by rememberSaveable { mutableStateOf(false) }
     var isExitTheme by rememberSaveable { mutableStateOf(false) }
-    var isWifiConnected by rememberSaveable { mutableStateOf(false) }
 
     val scope = rememberCoroutineScope()
     val snackbarHostState = remember { SnackbarHostState() }
@@ -112,6 +111,8 @@ fun AgentAssistantScreen(
     val isShowHint by viewModel.isShowHint.collectAsState()
     val isShowProgress by viewModel.isShowProgress.collectAsState()
     val hintCount by viewModel.hintCount.collectAsState()
+    val isWifiConnected by viewModel.isWifiConnected.collectAsState()
+    val isShowTranslate by viewModel.isShowTranslate.collectAsState()
 
     val lifecycleOwner = LocalLifecycleOwner.current
     val lifecycle = lifecycleOwner.lifecycle
@@ -147,6 +148,15 @@ fun AgentAssistantScreen(
                 }
             }
         }
+    }
+
+    if (isShowTranslate) {
+        TranslateDialog(
+            onDismissRequest = {
+                viewModel.closeTranslate()
+            },
+            isWifiConnect = isWifiConnected
+        )
     }
 
     if (isExitTheme) {
@@ -189,7 +199,7 @@ fun AgentAssistantScreen(
 
             Spacer(modifier = Modifier.height(32.dp))
 
-            if(!isWifiConnected) {
+            if (!isWifiConnected) {
                 Image(
                     painter = painterResource(id = R.drawable.useless_wifi),
                     contentDescription = "useless wifi image",
@@ -279,7 +289,7 @@ fun AgentAssistantScreen(
                         .clickable {
                             if (inputHintCode.value == "exit") {
                                 isExitTheme = true
-                            } else if(inputHintCode.value == "wifi") {
+                            } else if (inputHintCode.value == "wifi") {
                                 viewModel.connectWifi()
                             } else if (theme != null) {
                                 viewModel.findHint(theme!!, inputHintCode.value)
@@ -446,7 +456,7 @@ fun AgentAssistantScreen(
                                 painter = painterResource(id = R.drawable.translate_icon_img),
                                 contentDescription = "translate icon image",
                                 Modifier.clickable {
-
+                                    viewModel.openTranslate()
                                 }
                             )
                         }

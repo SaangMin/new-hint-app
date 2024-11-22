@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">MYSTERY HINT(USER)</string>
+    <string name="translate_screen_wifi_error_msg">신호가 약해 연결이 불가합니다.</string>
+    <string name="nothing_translate_msg">번역할 대화가 없습니다.</string>
 </resources>

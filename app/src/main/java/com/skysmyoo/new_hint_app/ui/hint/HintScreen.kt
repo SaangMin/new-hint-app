@@ -1,5 +1,10 @@
 package com.skysmyoo.new_hint_app.ui.hint
 
+import android.content.Context
+import android.os.Build
+import android.os.VibrationEffect
+import android.os.Vibrator
+import android.os.VibratorManager
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.compose.foundation.background
@@ -65,13 +70,9 @@ import androidx.core.net.toUri
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.navigation.NavController
-import androidx.work.Data
-import androidx.work.OneTimeWorkRequestBuilder
-import androidx.work.WorkManager
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.skysmyoo.new_hint_app.R
-import com.skysmyoo.new_hint_app.service.CountDownWorker
 import com.skysmyoo.new_hint_app.ui.StorePasswordDialog
 import com.skysmyoo.new_hint_app.ui.theme.HintBgColor
 import com.skysmyoo.new_hint_app.ui.theme.MainColor
@@ -81,7 +82,6 @@ import com.skysmyoo.new_hint_app.ui.theme.ThemeColor
 import com.skysmyoo.new_hint_app.utils.TimeFormat.formatTime
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import java.util.concurrent.TimeUnit
 
 @OptIn(
     ExperimentalMaterial3Api::class, ExperimentalGlideComposeApi::class,
@@ -446,7 +446,6 @@ fun HintScreen(
     }
 }
 
-/*
 @Composable
 fun countdownTimer(
     initialSeconds: Int,
@@ -487,8 +486,8 @@ fun countdownTimer(
 
     return remainingSeconds
 }
- */
 
+/*
 @Composable
 fun countdownTimer(
     initialSeconds: Int,
@@ -522,3 +521,4 @@ fun countdownTimer(
 
     return remainingSeconds
 }
+ */

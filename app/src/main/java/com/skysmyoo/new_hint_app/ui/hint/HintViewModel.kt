@@ -38,6 +38,9 @@ class HintViewModel @Inject constructor(
     private val _hintCount = MutableStateFlow<Int>(0)
     val hintCount: StateFlow<Int> = _hintCount
 
+    private val _isShowTranslate = MutableStateFlow(false)
+    val isShowTranslate: StateFlow<Boolean> = _isShowTranslate
+
     fun findHint(
         theme: ThemeModel,
         code: String,
@@ -98,6 +101,14 @@ class HintViewModel @Inject constructor(
 
     fun closeProgress() {
         _isShowProgress.value = false
+    }
+
+    fun openTranslate() {
+        _isShowTranslate.value = true
+    }
+
+    fun closeTranslate() {
+        _isShowTranslate.value = false
     }
 
     fun connectWifi() {
