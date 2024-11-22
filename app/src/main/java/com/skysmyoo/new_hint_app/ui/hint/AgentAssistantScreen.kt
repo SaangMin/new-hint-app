@@ -113,6 +113,7 @@ fun AgentAssistantScreen(
     val hintCount by viewModel.hintCount.collectAsState()
     val isWifiConnected by viewModel.isWifiConnected.collectAsState()
     val isShowTranslate by viewModel.isShowTranslate.collectAsState()
+    val isShowCall by viewModel.isShowCall.collectAsState()
 
     val lifecycleOwner = LocalLifecycleOwner.current
     val lifecycle = lifecycleOwner.lifecycle
@@ -156,6 +157,15 @@ fun AgentAssistantScreen(
                 viewModel.closeTranslate()
             },
             isWifiConnect = isWifiConnected
+        )
+    }
+
+    if(isShowCall) {
+        CallDialog(
+            onDismissRequest = {
+                viewModel.closeCall()
+            },
+            viewmodel = viewModel
         )
     }
 
@@ -446,7 +456,7 @@ fun AgentAssistantScreen(
                                 painter = painterResource(id = R.drawable.call_icon_img),
                                 contentDescription = "call icon image",
                                 Modifier.clickable {
-
+                                    viewModel.openCall()
                                 }
                             )
 
