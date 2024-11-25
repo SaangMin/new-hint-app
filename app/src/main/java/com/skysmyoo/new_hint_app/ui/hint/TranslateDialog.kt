@@ -23,12 +23,13 @@ import com.skysmyoo.new_hint_app.R
 fun TranslateDialog(
     onDismissRequest: () -> Unit,
     isWifiConnect: Boolean,
+    isTimeToTranslate: Boolean,
 ) {
 
     Dialog(
         onDismissRequest = { onDismissRequest() },
     ) {
-        if (isWifiConnect) {
+        if (isWifiConnect && !isTimeToTranslate) {
             Box(
                 modifier = Modifier
                     .fillMaxSize()
@@ -71,7 +72,7 @@ fun TranslateDialog(
                     Spacer(modifier = Modifier.weight(0.3f))
                 }
             }
-        } else {
+        } else if(!isWifiConnect) {
             Box(
                 modifier = Modifier
                     .fillMaxSize()
@@ -105,6 +106,49 @@ fun TranslateDialog(
 
                     Image(
                         painter = painterResource(id = R.drawable.wifi_error_img),
+                        contentDescription = "agent assistant background image",
+                        contentScale = ContentScale.FillBounds,
+                        modifier = Modifier
+                            .align(Alignment.CenterHorizontally),
+                    )
+
+                    Spacer(modifier = Modifier.weight(0.3f))
+                }
+            }
+        } else {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.agent_assistant_background),
+                    contentDescription = "agent assistant background image",
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier.matchParentSize()
+                )
+
+                Column(
+                    modifier = Modifier
+                        .wrapContentSize()
+                        .fillMaxSize(),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center,
+                ) {
+                    Image(
+                        painter = painterResource(id = R.drawable.close_img),
+                        contentDescription = "close image",
+                        modifier = Modifier
+                            .weight(0.1f)
+                            .align(Alignment.End)
+                            .clickable {
+                                onDismissRequest()
+                            }
+                    )
+
+                    Spacer(modifier = Modifier.weight(0.2f))
+
+                    Image(
+                        painter = painterResource(id = R.drawable.translating_img),
                         contentDescription = "agent assistant background image",
                         contentScale = ContentScale.FillBounds,
                         modifier = Modifier

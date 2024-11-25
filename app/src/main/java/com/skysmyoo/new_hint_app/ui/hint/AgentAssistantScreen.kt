@@ -114,6 +114,8 @@ fun AgentAssistantScreen(
     val isWifiConnected by viewModel.isWifiConnected.collectAsState()
     val isShowTranslate by viewModel.isShowTranslate.collectAsState()
     val isShowCall by viewModel.isShowCall.collectAsState()
+    val isTimeToTranslate by viewModel.isTimeToTranslate.collectAsState()
+    val isTimeToCall by viewModel.isTimeToCall.collectAsState()
 
     val lifecycleOwner = LocalLifecycleOwner.current
     val lifecycle = lifecycleOwner.lifecycle
@@ -156,7 +158,8 @@ fun AgentAssistantScreen(
             onDismissRequest = {
                 viewModel.closeTranslate()
             },
-            isWifiConnect = isWifiConnected
+            isWifiConnect = isWifiConnected,
+            isTimeToTranslate = isTimeToTranslate,
         )
     }
 
@@ -165,7 +168,8 @@ fun AgentAssistantScreen(
             onDismissRequest = {
                 viewModel.closeCall()
             },
-            viewModel = viewModel
+            viewModel = viewModel,
+            isTimeToCall = isTimeToCall,
         )
     }
 
@@ -301,6 +305,10 @@ fun AgentAssistantScreen(
                                 isExitTheme = true
                             } else if (inputHintCode.value == "wifi") {
                                 viewModel.connectWifi()
+                            } else if(inputHintCode.value == "translate") {
+                                viewModel.executeTranslate()
+                            } else if(inputHintCode.value == "call") {
+                                viewModel.executeCall()
                             } else if (theme != null) {
                                 viewModel.findHint(theme!!, inputHintCode.value)
                             }
@@ -452,23 +460,43 @@ fun AgentAssistantScreen(
                             horizontalArrangement = Arrangement.Center,
                             verticalAlignment = Alignment.CenterVertically
                         ) {
-                            Image(
-                                painter = painterResource(id = R.drawable.call_icon_img),
-                                contentDescription = "call icon image",
-                                Modifier.clickable {
-                                    viewModel.openCall()
-                                }
-                            )
+                            if(isTimeToCall) {
+                                Image(
+                                    painter = painterResource(id = R.drawable.time_to_call_img),
+                                    contentDescription = "call icon image",
+                                    Modifier.clickable {
+                                        viewModel.openCall()
+                                    }
+                                )
+                            } else {
+                                Image(
+                                    painter = painterResource(id = R.drawable.call_icon_img),
+                                    contentDescription = "call icon image",
+                                    Modifier.clickable {
+                                        viewModel.openCall()
+                                    }
+                                )
+                            }
 
                             Spacer(modifier = Modifier.padding(24.dp))
 
-                            Image(
-                                painter = painterResource(id = R.drawable.translate_icon_img),
-                                contentDescription = "translate icon image",
-                                Modifier.clickable {
-                                    viewModel.openTranslate()
-                                }
-                            )
+                            if(isTimeToTranslate) {
+                                Image(
+                                    painter = painterResource(id = R.drawable.time_to_translate),
+                                    contentDescription = "translate icon image",
+                                    Modifier.clickable {
+                                        viewModel.openTranslate()
+                                    }
+                                )
+                            } else {
+                                Image(
+                                    painter = painterResource(id = R.drawable.translate_icon_img),
+                                    contentDescription = "translate icon image",
+                                    Modifier.clickable {
+                                        viewModel.openTranslate()
+                                    }
+                                )
+                            }
                         }
 
                         Spacer(modifier = Modifier.width(10.dp))

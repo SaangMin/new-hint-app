@@ -50,6 +50,12 @@ class HintViewModel @Inject constructor(
     private val _isShowCallResult = MutableStateFlow(false)
     val isShowCallResult: StateFlow<Boolean> = _isShowCallResult
 
+    private val _isTimeToTranslate = MutableStateFlow(false)
+    val isTimeToTranslate: StateFlow<Boolean> = _isTimeToTranslate
+
+    private val _isTimeToCall = MutableStateFlow(false)
+    val isTimeToCall: StateFlow<Boolean> = _isTimeToCall
+
     fun findHint(
         theme: ThemeModel,
         code: String,
@@ -122,6 +128,14 @@ class HintViewModel @Inject constructor(
 
     fun connectWifi() {
         _isWifiConnected.value = !_isWifiConnected.value
+    }
+
+    fun executeTranslate() {
+        _isTimeToTranslate.value = !_isTimeToTranslate.value
+    }
+
+    fun executeCall() {
+        _isTimeToCall.value = !_isTimeToCall.value
     }
 
     fun openCall() {

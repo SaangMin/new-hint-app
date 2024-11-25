@@ -2,7 +2,6 @@
 
 package com.skysmyoo.new_hint_app.ui.hint
 
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -20,7 +19,6 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -48,13 +46,13 @@ import com.skysmyoo.new_hint_app.ui.theme.CallInputTextLabelColor
 fun CallDialog(
     onDismissRequest: () -> Unit,
     viewModel: HintViewModel,
+    isTimeToCall: Boolean,
 ) {
 
     var inputCallNumber by remember { mutableStateOf("") }
     var resultNumber by remember { mutableStateOf("")}
 
     val isShowCallResult by viewModel.isShowCallResult.collectAsState()
-    val usableCall by viewModel.usableCall.collectAsState()
 
     if (isShowCallResult) {
         CallResultDialog(
@@ -63,10 +61,6 @@ fun CallDialog(
             },
             callNumber = resultNumber,
         )
-    }
-
-    LaunchedEffect(usableCall) {
-        Log.d("TAG", "usableCall changed : $usableCall")
     }
 
     Dialog(
@@ -291,7 +285,7 @@ fun CallDialog(
                     contentDescription = "call button image",
                     modifier = Modifier
                         .clickable {
-                            if (!usableCall) {
+                            if(!isTimeToCall) {
                                 resultNumber = "0"
                                 viewModel.openCallResult()
                             } else {
@@ -311,16 +305,6 @@ fun CallDialog(
                                 }
                             }
                         }
-                )
-
-                Image(
-                    painter = painterResource(
-                        id = R.drawable.call_zero
-                    ),
-                    contentDescription = "call zero image",
-                    modifier = Modifier.clickable {
-                        viewModel.setUsableCall()
-                    }
                 )
 
                 Spacer(modifier = Modifier.weight(0.2f))
