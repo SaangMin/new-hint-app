@@ -50,7 +50,7 @@ fun CallDialog(
 ) {
 
     var inputCallNumber by remember { mutableStateOf("") }
-    var resultNumber by remember { mutableStateOf("")}
+    var resultNumber by remember { mutableStateOf("") }
 
     val isShowCallResult by viewModel.isShowCallResult.collectAsState()
 
@@ -285,7 +285,7 @@ fun CallDialog(
                     contentDescription = "call button image",
                     modifier = Modifier
                         .clickable {
-                            if(!isTimeToCall) {
+                            if (!isTimeToCall) {
                                 resultNumber = "0"
                                 viewModel.openCallResult()
                             } else {
@@ -293,11 +293,16 @@ fun CallDialog(
                                     "110" -> {
                                         resultNumber = "110"
                                         viewModel.openCallResult()
+                                        viewModel.sendUDPMessage("110", "192.168.83.210", 12345)
                                     }
+
                                     "81382922279" -> {
                                         resultNumber = "81382922279"
                                         viewModel.openCallResult()
+                                        viewModel.sendUDPMessage("81382922279", "192.168.83.210", 12345)
+
                                     }
+
                                     else -> {
                                         resultNumber = "0"
                                         viewModel.openCallResult()

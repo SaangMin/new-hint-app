@@ -103,6 +103,22 @@ class HintViewModel @Inject constructor(
         }
     }
 
+    fun sendUDPMessage(message: String, serverIP: String, serverPort: Int) {
+        viewModelScope.launch {
+            repository.sendUDPMessage(message, serverIP, serverPort)
+        }
+    }
+
+    fun startUDPReceiver(
+        port: Int,
+        onMessageReceived: (String) -> Unit,
+        onError: (String) -> Unit
+    ) {
+        viewModelScope.launch {
+            repository.startUDPReceiver(port, onMessageReceived, onError)
+        }
+    }
+
     fun resetData() {
         _foundedHint.value = null
         _savedTheme.value = null

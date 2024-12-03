@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
@@ -24,6 +25,7 @@ fun TranslateDialog(
     onDismissRequest: () -> Unit,
     isWifiConnect: Boolean,
     isTimeToTranslate: Boolean,
+    viewModel: HintViewModel,
 ) {
 
     Dialog(
@@ -116,6 +118,10 @@ fun TranslateDialog(
                 }
             }
         } else {
+            LaunchedEffect(Unit) {
+                viewModel.sendUDPMessage("translate_success", "192.168.83.210", 12345)
+            }
+
             Box(
                 modifier = Modifier
                     .fillMaxSize()

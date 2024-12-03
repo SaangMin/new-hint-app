@@ -45,4 +45,16 @@ class StoreRepository @Inject constructor(
         val store = localDataSource.getStore()
         return store.themeList.find { it.themeTitle == title }
     }
+
+    suspend fun sendUDPMessage(message: String, serverIP: String, serverPort: Int): String {
+        return remoteDataSource.sendUDPMessage(message, serverIP, serverPort)
+    }
+
+    suspend fun startUDPReceiver(
+        port: Int,
+        onMessageReceived: (String) -> Unit,
+        onError: (String) -> Unit
+    ) {
+        remoteDataSource.startUDPReceiver(port, onMessageReceived, onError)
+    }
 }

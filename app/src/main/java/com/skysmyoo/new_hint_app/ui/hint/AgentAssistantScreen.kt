@@ -1,5 +1,6 @@
 package com.skysmyoo.new_hint_app.ui.hint
 
+import android.util.Log
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.compose.foundation.Image
@@ -131,6 +132,25 @@ fun AgentAssistantScreen(
 
     LaunchedEffect(Unit) {
 //        viewModel.findTheme(title)
+        viewModel.startUDPReceiver(
+            port = 12345,
+            onMessageReceived = { message ->
+                when(message) {
+                    "wifi" -> {
+                        viewModel.connectWifi()
+                    }
+                    "call" -> {
+                        viewModel.executeCall()
+                    }
+                    "translate" -> {
+                        viewModel.executeTranslate()
+                    }
+                }
+            },
+            onError = { error ->
+                Log.e("TAG", "UDP receive error = $error")
+            }
+        )
     }
 
     val remainingSeconds = assistantCountdownTimer(theme?.themeTime ?: 0, isStartTheme)
@@ -160,6 +180,7 @@ fun AgentAssistantScreen(
             },
             isWifiConnect = isWifiConnected,
             isTimeToTranslate = isTimeToTranslate,
+            viewModel = viewModel,
         )
     }
 

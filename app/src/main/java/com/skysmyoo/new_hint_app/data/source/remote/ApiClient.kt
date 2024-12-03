@@ -8,4 +8,8 @@ interface ApiClient {
 
     @GET("stores.json")
     suspend fun getStores(): ApiResponse<Map<String, StoreModel?>>
+
+    suspend fun sendUDPMessage(message: String, serverIP: String, serverPort: Int): String
+
+    suspend fun startUDPReceiver(port: Int, onMessageReceived: (String) -> Unit, onError: (String) -> Unit)
 }
