@@ -3,7 +3,6 @@ package com.skysmyoo.new_hint_app.ui.home
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -44,7 +43,6 @@ import com.skysmyoo.new_hint_app.ui.StoreViewModel
 import com.skysmyoo.new_hint_app.ui.components.ThemeItem
 import com.skysmyoo.new_hint_app.ui.theme.MainColor
 import com.skysmyoo.new_hint_app.ui.theme.ServeColor
-import com.skysmyoo.new_hint_app.ui.theme.ThemeColor
 import com.skysmyoo.new_hint_app.ui.theme.TitleColor
 
 @Composable
@@ -132,13 +130,17 @@ fun HomeScreen(navController: NavController, viewModel: StoreViewModel) {
                         ThemeItem(
                             theme = theme,
                             onClick = {
-                                navController.navigate("hintScreen/${theme.themeTitle}")
+                                if(theme.themeTitle == "인도네시아") {
+                                    navController.navigate("agentAssistant/인도네시아")
+                                }else {
+                                    navController.navigate("hintScreen/${theme.themeTitle}")
+                                }
                             },
                         )
                     }
                 }
             }
-
+/*
             Text(
                 text = "인도네시아",
                 color = ThemeColor,
@@ -148,7 +150,7 @@ fun HomeScreen(navController: NavController, viewModel: StoreViewModel) {
                 modifier = Modifier.clickable {
                     navController.navigate("agentAssistant/인도네시아")
                 }
-            )
+            )*/
 
             Box(
                 modifier = Modifier

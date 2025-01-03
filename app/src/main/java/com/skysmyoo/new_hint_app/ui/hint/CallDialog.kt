@@ -293,13 +293,13 @@ fun CallDialog(
                                     "110" -> {
                                         resultNumber = "110"
                                         viewModel.openCallResult()
-                                        viewModel.sendUDPMessage("110", "192.168.83.210", 12345)
+                                        viewModel.sendUDPMessage("success1", "192.168.83.210", 12345)
                                     }
 
                                     "81382922279" -> {
                                         resultNumber = "81382922279"
                                         viewModel.openCallResult()
-                                        viewModel.sendUDPMessage("81382922279", "192.168.83.210", 12345)
+                                        viewModel.sendUDPMessage("success2", "192.168.83.210", 12345)
 
                                     }
 

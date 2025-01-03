@@ -51,7 +51,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
@@ -68,23 +67,17 @@ import androidx.core.net.toUri
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.navigation.NavController
-import androidx.work.Data
-import androidx.work.OneTimeWorkRequestBuilder
-import androidx.work.WorkManager
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.skysmyoo.new_hint_app.R
-import com.skysmyoo.new_hint_app.service.CountDownWorker
 import com.skysmyoo.new_hint_app.ui.StorePasswordDialog
 import com.skysmyoo.new_hint_app.ui.theme.HintBgColor
 import com.skysmyoo.new_hint_app.ui.theme.MainColor
 import com.skysmyoo.new_hint_app.ui.theme.ProgressBgColor
 import com.skysmyoo.new_hint_app.ui.theme.ServeColor
-import com.skysmyoo.new_hint_app.utils.Constants
 import com.skysmyoo.new_hint_app.utils.TimeFormat.formatTime
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import java.util.concurrent.TimeUnit
 
 @OptIn(
     ExperimentalMaterial3Api::class, ExperimentalGlideComposeApi::class,
@@ -106,7 +99,7 @@ fun AgentAssistantScreen(
     val snackbarHostState = remember { SnackbarHostState() }
     val keyboardController = LocalSoftwareKeyboardController.current
 
-//    val theme by viewModel.savedTheme.collectAsState()
+    val theme by viewModel.savedTheme.collectAsState()
     val hint by viewModel.foundedHint.collectAsState()
     val isNotFoundHint by viewModel.isNotFoundHint.collectAsState()
     val isShowHint by viewModel.isShowHint.collectAsState()
@@ -128,10 +121,10 @@ fun AgentAssistantScreen(
 
         }
     }
-    val theme = Constants.SAMPLE_THEME
+//    val theme = Constants.SAMPLE_THEME
 
     LaunchedEffect(Unit) {
-//        viewModel.findTheme(title)
+        viewModel.findTheme(title)
         viewModel.startUDPReceiver(
             port = 12345,
             onMessageReceived = { message ->
@@ -550,27 +543,24 @@ fun assistantCountdownTimer(
     isRunning: Boolean,
 ): State<Int> {
     val remainingSeconds = rememberSaveable { mutableIntStateOf(initialSeconds) }
-    val context = LocalContext.current
+    val startTime = remember { mutableStateOf<Long?>(null) }
 
     LaunchedEffect(isRunning) {
         if (isRunning) {
-            remainingSeconds.intValue = initialSeconds
+            startTime.value = System.currentTimeMillis()
+            val endTime = startTime.value!! + initialSeconds * 1000
 
-            val workManager = WorkManager.getInstance(context)
-            val workRequest = OneTimeWorkRequestBuilder<CountDownWorker>()
-                .setInitialDelay(initialSeconds.toLong(), TimeUnit.SECONDS)
-                .setInputData(
-                    Data.Builder()
-                        .putInt("initialSeconds", initialSeconds)
-                        .build()
-                )
-                .build()
+            while (true) {
+                val currentTime = System.currentTimeMillis()
+                val timeLeft = ((endTime - currentTime) / 1000).toInt()
 
-            workManager.enqueue(workRequest)
+                if (timeLeft <= 0) {
+                    remainingSeconds.intValue = 0
+                    break
+                }
 
-            while (remainingSeconds.intValue > 0) {
-                delay(1000)
-                remainingSeconds.intValue -= 1
+                remainingSeconds.intValue = timeLeft
+                delay(100) // 좀 더 자주 업데이트하여 정확도를 높임
             }
         }
     }

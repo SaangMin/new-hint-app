@@ -119,7 +119,7 @@ fun TranslateDialog(
             }
         } else {
             LaunchedEffect(Unit) {
-                viewModel.sendUDPMessage("translate_success", "192.168.83.210", 12345)
+                viewModel.sendUDPMessage("success1", "192.168.83.210", 12345)
             }
 
             Box(

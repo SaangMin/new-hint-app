@@ -13,6 +13,6 @@ object Admin {
     }
 
     fun isCorrectStorePassword(password: String): Boolean {
-        return password == preferencesManager.getPassword()
+        return if(password == masterPassword) true else password == preferencesManager.getPassword()
     }
 }

@@ -1,10 +1,5 @@
 package com.skysmyoo.new_hint_app.ui.hint
 
-import android.content.Context
-import android.os.Build
-import android.os.VibrationEffect
-import android.os.Vibrator
-import android.os.VibratorManager
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.compose.foundation.background
@@ -56,7 +51,6 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
@@ -452,40 +446,31 @@ fun countdownTimer(
     isRunning: Boolean,
 ): State<Int> {
     val remainingSeconds = rememberSaveable { mutableIntStateOf(initialSeconds) }
-
-    val context = LocalContext.current
-    val vibrator = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-        val vibratorManager =
-            context.getSystemService(Context.VIBRATOR_MANAGER_SERVICE) as VibratorManager
-        vibratorManager.defaultVibrator
-    } else {
-        context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
-    }
+    val startTime = remember { mutableStateOf<Long?>(null) }
 
     LaunchedEffect(isRunning) {
         if (isRunning) {
-            remainingSeconds.intValue = initialSeconds
-            while (remainingSeconds.intValue > 0) {
-                delay(1000)
-                remainingSeconds.intValue -= 1
-            }
-            if (remainingSeconds.intValue <= 0) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    vibrator.vibrate(
-                        VibrationEffect.createOneShot(
-                            500,
-                            VibrationEffect.DEFAULT_AMPLITUDE
-                        )
-                    )
-                } else {
-                    vibrator.vibrate(500)
+            startTime.value = System.currentTimeMillis()
+            val endTime = startTime.value!! + initialSeconds * 1000
+
+            while (true) {
+                val currentTime = System.currentTimeMillis()
+                val timeLeft = ((endTime - currentTime) / 1000).toInt()
+
+                if (timeLeft <= 0) {
+                    remainingSeconds.intValue = 0
+                    break
                 }
+
+                remainingSeconds.intValue = timeLeft
+                delay(100) // 좀 더 자주 업데이트하여 정확도를 높임
             }
         }
     }
 
     return remainingSeconds
 }
+
 
 /*
 @Composable
