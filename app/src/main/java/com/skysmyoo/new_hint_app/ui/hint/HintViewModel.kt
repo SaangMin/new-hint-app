@@ -154,6 +154,12 @@ class HintViewModel @Inject constructor(
         _isTimeToCall.value = !_isTimeToCall.value
     }
 
+    fun resetState() {
+        _isTimeToCall.value = false
+        _isTimeToTranslate.value = false
+        _isWifiConnected.value = false
+    }
+
     fun openCall() {
         _isShowCall.value = true
     }

@@ -19,6 +19,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.window.Dialog
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.skysmyoo.new_hint_app.R
+import com.skysmyoo.new_hint_app.utils.Constants
 
 @Composable
 fun TranslateDialog(
@@ -119,7 +120,7 @@ fun TranslateDialog(
             }
         } else {
             LaunchedEffect(Unit) {
-                viewModel.sendUDPMessage("success1", "192.168.83.210", 12345)
+                viewModel.sendUDPMessage("success1", Constants.UDP_IP, 12345)
             }
 
             Box(

@@ -144,6 +144,7 @@ fun AgentAssistantScreen(
                 Log.e("TAG", "UDP receive error = $error")
             }
         )
+        viewModel.resetState()
     }
 
     val remainingSeconds = assistantCountdownTimer(theme?.themeTime ?: 0, isStartTheme)

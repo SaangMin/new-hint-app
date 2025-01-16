@@ -41,6 +41,7 @@ import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.skysmyoo.new_hint_app.R
 import com.skysmyoo.new_hint_app.ui.theme.CallInputTextBorderColor
 import com.skysmyoo.new_hint_app.ui.theme.CallInputTextLabelColor
+import com.skysmyoo.new_hint_app.utils.Constants
 
 @Composable
 fun CallDialog(
@@ -293,13 +294,13 @@ fun CallDialog(
                                     "110" -> {
                                         resultNumber = "110"
                                         viewModel.openCallResult()
-                                        viewModel.sendUDPMessage("success1", "192.168.83.210", 12345)
+                                        viewModel.sendUDPMessage("success1", Constants.UDP_IP, 12345)
                                     }
 
                                     "81382922279" -> {
                                         resultNumber = "81382922279"
                                         viewModel.openCallResult()
-                                        viewModel.sendUDPMessage("success2", "192.168.83.210", 12345)
+                                        viewModel.sendUDPMessage("success2", Constants.UDP_IP, 12345)
 
                                     }
 
