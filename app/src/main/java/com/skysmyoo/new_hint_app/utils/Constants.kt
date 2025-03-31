@@ -19,5 +19,5 @@ object Constants {
     const val KEY_LAST_PHONE_NUMBER = "key_last_phone_number"
     const val PATH_STORES = "stores"
     val SAMPLE_THEME = ThemeModel(themeTitle = "인도네시아", themeTime = 3600, hintList = emptyList())
-    const val UDP_IP = "192.168.0.119"
+    const val UDP_IP = "192.168.219.255"
 }

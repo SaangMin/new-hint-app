@@ -143,15 +143,15 @@ class HintViewModel @Inject constructor(
     }
 
     fun connectWifi() {
-        _isWifiConnected.value = !_isWifiConnected.value
+        _isWifiConnected.value = true
     }
 
     fun executeTranslate() {
-        _isTimeToTranslate.value = !_isTimeToTranslate.value
+        _isTimeToTranslate.value = true
     }
 
     fun executeCall() {
-        _isTimeToCall.value = !_isTimeToCall.value
+        _isTimeToCall.value = true
     }
 
     fun resetState() {

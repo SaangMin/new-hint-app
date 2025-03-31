@@ -138,6 +138,9 @@ fun AgentAssistantScreen(
                     "translate" -> {
                         viewModel.executeTranslate()
                     }
+                    "reset" -> {
+                        viewModel.resetState()
+                    }
                 }
             },
             onError = { error ->
@@ -318,12 +321,14 @@ fun AgentAssistantScreen(
                         .clickable {
                             if (inputHintCode.value == "exit") {
                                 isExitTheme = true
-                            } else if (inputHintCode.value == "wifi") {
+                            } else if (inputHintCode.value == "!wifi") {
                                 viewModel.connectWifi()
-                            } else if(inputHintCode.value == "translate") {
+                            } else if(inputHintCode.value == "!translate") {
                                 viewModel.executeTranslate()
-                            } else if(inputHintCode.value == "call") {
+                            } else if(inputHintCode.value == "!call") {
                                 viewModel.executeCall()
+                            } else if(inputHintCode.value == "!reset") {
+                                viewModel.resetState()
                             } else if (theme != null) {
                                 viewModel.findHint(theme!!, inputHintCode.value)
                             }
