@@ -75,6 +75,7 @@ import com.skysmyoo.new_hint_app.ui.theme.HintBgColor
 import com.skysmyoo.new_hint_app.ui.theme.MainColor
 import com.skysmyoo.new_hint_app.ui.theme.ProgressBgColor
 import com.skysmyoo.new_hint_app.ui.theme.ServeColor
+import com.skysmyoo.new_hint_app.utils.Constants
 import com.skysmyoo.new_hint_app.utils.TimeFormat.formatTime
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -126,18 +127,21 @@ fun AgentAssistantScreen(
     LaunchedEffect(Unit) {
         viewModel.findTheme(title)
         viewModel.startUDPReceiver(
-            port = 12345,
+            port = Constants.UDP_PORT,
             onMessageReceived = { message ->
-                when(message) {
+                when (message) {
                     "wifi" -> {
                         viewModel.connectWifi()
                     }
+
                     "call" -> {
                         viewModel.executeCall()
                     }
+
                     "translate" -> {
                         viewModel.executeTranslate()
                     }
+
                     "reset" -> {
                         viewModel.resetState()
                     }
@@ -181,7 +185,7 @@ fun AgentAssistantScreen(
         )
     }
 
-    if(isShowCall) {
+    if (isShowCall) {
         CallDialog(
             onDismissRequest = {
                 viewModel.closeCall()
@@ -321,13 +325,11 @@ fun AgentAssistantScreen(
                         .clickable {
                             if (inputHintCode.value == "exit") {
                                 isExitTheme = true
-                            } else if (inputHintCode.value == "!wifi") {
-                                viewModel.connectWifi()
-                            } else if(inputHintCode.value == "!translate") {
+                            } else if (inputHintCode.value == "!translate") {
                                 viewModel.executeTranslate()
-                            } else if(inputHintCode.value == "!call") {
+                            } else if (inputHintCode.value == "!call") {
                                 viewModel.executeCall()
-                            } else if(inputHintCode.value == "!reset") {
+                            } else if (inputHintCode.value == "!reset") {
                                 viewModel.resetState()
                             } else if (theme != null) {
                                 viewModel.findHint(theme!!, inputHintCode.value)
@@ -480,7 +482,7 @@ fun AgentAssistantScreen(
                             horizontalArrangement = Arrangement.Center,
                             verticalAlignment = Alignment.CenterVertically
                         ) {
-                            if(isTimeToCall) {
+                            if (isTimeToCall) {
                                 Image(
                                     painter = painterResource(id = R.drawable.time_to_call_img),
                                     contentDescription = "call icon image",
@@ -500,7 +502,7 @@ fun AgentAssistantScreen(
 
                             Spacer(modifier = Modifier.padding(24.dp))
 
-                            if(isTimeToTranslate) {
+                            if (isTimeToTranslate) {
                                 Image(
                                     painter = painterResource(id = R.drawable.time_to_translate),
                                     contentDescription = "translate icon image",

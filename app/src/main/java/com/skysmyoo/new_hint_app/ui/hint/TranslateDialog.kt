@@ -120,7 +120,7 @@ fun TranslateDialog(
             }
         } else {
             LaunchedEffect(Unit) {
-                viewModel.sendUDPMessage("success1", Constants.UDP_IP, 12345)
+                viewModel.sendUDPMessage("success1", Constants.UDP_IP, Constants.UDP_PORT)
             }
 
             Box(

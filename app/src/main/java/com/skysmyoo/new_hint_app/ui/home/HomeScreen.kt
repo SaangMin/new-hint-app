@@ -130,8 +130,8 @@ fun HomeScreen(navController: NavController, viewModel: StoreViewModel) {
                         ThemeItem(
                             theme = theme,
                             onClick = {
-                                if(theme.themeTitle == "인도네시아") {
-                                    navController.navigate("agentAssistant/인도네시아")
+                                if(theme.themeTitle == "카부트") {
+                                    navController.navigate("agentAssistant/${theme.themeTitle}")
                                 }else {
                                     navController.navigate("hintScreen/${theme.themeTitle}")
                                 }

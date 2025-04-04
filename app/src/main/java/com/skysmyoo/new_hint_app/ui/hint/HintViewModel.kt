@@ -148,6 +148,7 @@ class HintViewModel @Inject constructor(
 
     fun executeTranslate() {
         _isTimeToTranslate.value = true
+        _isWifiConnected.value = true
     }
 
     fun executeCall() {
