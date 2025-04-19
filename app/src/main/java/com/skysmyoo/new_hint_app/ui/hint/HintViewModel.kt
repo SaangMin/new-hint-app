@@ -1,10 +1,12 @@
 package com.skysmyoo.new_hint_app.ui.hint
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.skysmyoo.new_hint_app.data.model.HintModel
 import com.skysmyoo.new_hint_app.data.model.ThemeModel
 import com.skysmyoo.new_hint_app.data.source.repository.StoreRepository
+import com.skysmyoo.new_hint_app.service.UDPEventBus
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -105,7 +107,23 @@ class HintViewModel @Inject constructor(
 
     fun sendUDPMessage(message: String, serverIP: String, serverPort: Int) {
         viewModelScope.launch {
+            Log.d("UDP", message)
             repository.sendUDPMessage(message, serverIP, serverPort)
+            delay(1000)
+            var isLoop = true
+            while (isLoop) {
+                Log.d("UDP", "loop")
+                UDPEventBus.messages.collect { message ->
+                    Log.d("UDP", "receive")
+                    when (message) {
+                        "receive" -> isLoop = false
+                        else -> {
+                            repository.sendUDPMessage(message, serverIP, serverPort)
+                            delay(1000)
+                        }
+                    }
+                }
+            }
         }
     }
 

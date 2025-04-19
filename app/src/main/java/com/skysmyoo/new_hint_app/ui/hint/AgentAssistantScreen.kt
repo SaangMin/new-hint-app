@@ -1,5 +1,6 @@
 package com.skysmyoo.new_hint_app.ui.hint
 
+import android.content.Intent
 import android.util.Log
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
@@ -51,6 +52,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
@@ -70,12 +72,13 @@ import androidx.navigation.NavController
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.skysmyoo.new_hint_app.R
+import com.skysmyoo.new_hint_app.service.CountDownService
+import com.skysmyoo.new_hint_app.service.UDPEventBus
 import com.skysmyoo.new_hint_app.ui.StorePasswordDialog
 import com.skysmyoo.new_hint_app.ui.theme.HintBgColor
 import com.skysmyoo.new_hint_app.ui.theme.MainColor
 import com.skysmyoo.new_hint_app.ui.theme.ProgressBgColor
 import com.skysmyoo.new_hint_app.ui.theme.ServeColor
-import com.skysmyoo.new_hint_app.utils.Constants
 import com.skysmyoo.new_hint_app.utils.TimeFormat.formatTime
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -123,35 +126,25 @@ fun AgentAssistantScreen(
         }
     }
 //    val theme = Constants.SAMPLE_THEME
-
+    val context = LocalContext.current
     LaunchedEffect(Unit) {
-        viewModel.findTheme(title)
-        viewModel.startUDPReceiver(
-            port = Constants.UDP_PORT,
-            onMessageReceived = { message ->
-                when (message) {
-                    "wifi" -> {
-                        viewModel.connectWifi()
-                    }
-
-                    "call" -> {
-                        viewModel.executeCall()
-                    }
-
-                    "translate" -> {
-                        viewModel.executeTranslate()
-                    }
-
-                    "reset" -> {
-                        viewModel.resetState()
-                    }
-                }
-            },
-            onError = { error ->
-                Log.e("TAG", "UDP receive error = $error")
-            }
-        )
+        context.startService(Intent(context, CountDownService::class.java))
         viewModel.resetState()
+        viewModel.findTheme(title)
+        UDPEventBus.messages.collect { message ->
+            when (message) {
+                "wifi" -> viewModel.connectWifi()
+                "call" -> viewModel.executeCall()
+                "translate" -> viewModel.executeTranslate()
+                "reset" -> viewModel.resetState()
+                "receive" -> {
+                    delay(3000)
+                    UDPEventBus.send("")
+                }
+
+                else -> Log.d("UI", "Unknown UDP: $message")
+            }
+        }
     }
 
     val remainingSeconds = assistantCountdownTimer(theme?.themeTime ?: 0, isStartTheme)

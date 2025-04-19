@@ -1,6 +1,12 @@
 package com.skysmyoo.new_hint_app
 
+import android.content.Context
+import android.content.Intent
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.os.PowerManager
+import android.provider.Settings
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
@@ -26,6 +32,18 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             Navigation(storeViewModel, hintViewModel)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                val packageName = applicationContext.packageName
+                val pm = applicationContext.getSystemService(Context.POWER_SERVICE) as PowerManager
+
+                if (!pm.isIgnoringBatteryOptimizations(packageName)) {
+                    val intent = Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS).apply {
+                        data = Uri.parse("package:$packageName")
+                        flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                    }
+                    startActivity(intent)
+                }
+            }
         }
     }
 }
