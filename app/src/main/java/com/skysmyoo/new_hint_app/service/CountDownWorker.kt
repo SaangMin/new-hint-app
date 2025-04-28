@@ -10,6 +10,8 @@ import android.net.wifi.WifiManager
 import android.os.Build
 import android.os.IBinder
 import android.os.PowerManager
+import android.os.VibrationEffect
+import android.os.Vibrator
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import com.skysmyoo.new_hint_app.R
@@ -26,6 +28,7 @@ class CountDownService : Service() {
     private lateinit var udpReceiver: DatagramSocket
     private lateinit var wakeLock: PowerManager.WakeLock
     private lateinit var wifiLock: WifiManager.WifiLock
+    private var isListening = true
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         Log.d("UDP", "CountDownService 시작됨")
@@ -64,29 +67,64 @@ class CountDownService : Service() {
                 udpReceiver = DatagramSocket(Constants.UDP_RECEIVE_PORT)
                 val buffer = ByteArray(1024)
                 val packet = DatagramPacket(buffer, buffer.size)
-                Log.d("UDP", "startListener")
 
-                while (true) {
-                    udpReceiver.receive(packet)
-                    val message = String(packet.data, 0, packet.length)
-                    Log.d("UDP", "Received: $message")
+                Log.d("UDP", "UDP Listener 시작")
 
-                    UDPEventBus.send(message)
+                while (isListening) {
+                    try {
+                        udpReceiver.receive(packet)
+                        val message = String(packet.data, 0, packet.length)
+                        Log.d("UDP", "Received: $message")
+
+                        UDPEventBus.send(message)
+//                        vibrate()
+                    } catch (e: Exception) {
+                        Log.e("UDP", "수신 중 오류 발생: ${e.message}")
+                        restartUDPReceiver() // 소켓 복구 시도
+                        break
+                    }
                 }
             } catch (e: Exception) {
-                Log.e("UDP", "UDP 오류: ${e.message}")
+                Log.e("UDP", "UDP 소켓 생성 실패: ${e.message}")
             }
         }
     }
 
+    private fun restartUDPReceiver() {
+        try {
+            isListening = false // 먼저 listening을 끊어줘야 함
+            if (::udpReceiver.isInitialized) {
+                udpReceiver.close()
+            }
+        } catch (e: Exception) {
+            Log.e("UDP", "UDP 소켓 close 중 오류: ${e.message}")
+        }
+        isListening = true // 다시 listening 세팅
+        startUDPListener()
+    }
 
-    private fun vibrate() { /* 진동 처리 */
+    private fun vibrate() {
+        try {
+            val vibrator = getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                val effect = VibrationEffect.createOneShot(500, VibrationEffect.DEFAULT_AMPLITUDE)
+                vibrator.vibrate(effect)
+            } else {
+                vibrator.vibrate(500) // 500ms 진동
+            }
+        } catch (e: Exception) {
+            Log.e("Vibrate", "진동 실패: ${e.message}")
+        }
     }
 
     override fun onDestroy() {
         super.onDestroy()
+        isListening = false
         try {
-            if (::udpReceiver.isInitialized) udpReceiver.close()
+            if (::udpReceiver.isInitialized) {
+                udpReceiver.close()
+                Log.d("UDP","udp closed")
+            }
         } catch (_: Exception) {}
 
         if (::wakeLock.isInitialized && wakeLock.isHeld) {

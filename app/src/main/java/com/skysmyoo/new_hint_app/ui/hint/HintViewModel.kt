@@ -107,22 +107,26 @@ class HintViewModel @Inject constructor(
 
     fun sendUDPMessage(message: String, serverIP: String, serverPort: Int) {
         viewModelScope.launch {
-            Log.d("UDP", message)
-            repository.sendUDPMessage(message, serverIP, serverPort)
-            delay(1000)
             var isLoop = true
-            while (isLoop) {
-                Log.d("UDP", "loop")
-                UDPEventBus.messages.collect { message ->
+
+            // 메시지 수신 모니터링 별도로 실행
+            launch {
+                UDPEventBus.messages.collect { receivedMessage ->
                     Log.d("UDP", "receive")
-                    when (message) {
-                        "receive" -> isLoop = false
-                        else -> {
-                            repository.sendUDPMessage(message, serverIP, serverPort)
-                            delay(1000)
-                        }
+                    if (receivedMessage == "receive" || !_isTimeToCall.value || !_isTimeToTranslate.value) {
+                        isLoop = false
                     }
                 }
+            }
+
+            // 메시지 송신 루프
+            repository.sendUDPMessage(message, serverIP, serverPort)
+            delay(500)
+
+            while (isLoop) {
+                Log.d("UDP", "loop: re-sending message")
+                repository.sendUDPMessage(message, serverIP, serverPort)
+                delay(1000)
             }
         }
     }

@@ -42,7 +42,6 @@ import com.skysmyoo.new_hint_app.R
 import com.skysmyoo.new_hint_app.ui.theme.CallInputTextBorderColor
 import com.skysmyoo.new_hint_app.ui.theme.CallInputTextLabelColor
 import com.skysmyoo.new_hint_app.utils.Constants
-import kotlinx.coroutines.delay
 
 @Composable
 fun CallDialog(
@@ -293,16 +292,15 @@ fun CallDialog(
                             } else {
                                 when (inputCallNumber) {
                                     "110" -> {
+                                        viewModel.sendUDPMessage("success1", Constants.UDP_IP, Constants.UDP_SEND_PORT)
                                         resultNumber = "110"
                                         viewModel.openCallResult()
-                                        viewModel.sendUDPMessage("success1", Constants.UDP_IP, Constants.UDP_SEND_PORT)
                                     }
 
-                                    "81382922279" -> {
-                                        resultNumber = "81382922279"
-                                        viewModel.openCallResult()
+                                    "8132279" -> {
                                         viewModel.sendUDPMessage("success2", Constants.UDP_IP, Constants.UDP_SEND_PORT)
-
+                                        resultNumber = "8132279"
+                                        viewModel.openCallResult()
                                     }
 
                                     else -> {

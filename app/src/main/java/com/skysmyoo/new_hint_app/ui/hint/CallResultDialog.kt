@@ -66,16 +66,16 @@ fun CallResultDialog(
                 when (callNumber) {
                     "110" -> {
                         Image(
-                            painter = painterResource(id = R.drawable.calling_110_img),
+                            painter = painterResource(id = R.drawable.calling_110_retry),
                             contentDescription = "wrong number error image",
                             modifier = Modifier
                                 .weight(0.9f)
                                 .align(Alignment.CenterHorizontally)
                         )
                     }
-                    "81382922279" -> {
+                    "8132279" -> {
                         Image(
-                            painter = painterResource(id = R.drawable.calling_813_img),
+                            painter = painterResource(id = R.drawable.calling_813_retry),
                             contentDescription = "wrong number error image",
                             modifier = Modifier
                                 .weight(0.9f)

@@ -38,6 +38,7 @@ class StoreRemoteDataSource @Inject constructor(private val apiClient: ApiClient
     }
 
     suspend fun sendUDPMessage(message: String, serverIP: String, serverPort: Int): String {
+        Log.d("UDP","msg: $message")
         return withContext(Dispatchers.IO) {
             try {
                 val socket = DatagramSocket()
@@ -48,16 +49,21 @@ class StoreRemoteDataSource @Inject constructor(private val apiClient: ApiClient
                 val packet = DatagramPacket(buffer, buffer.size, address, serverPort)
                 socket.send(packet)
 
-                //응답 받기
+                /*//응답 받기
                 val responseBuffer = ByteArray(1024)
                 val responsePacket = DatagramPacket(responseBuffer, responseBuffer.size)
                 socket.receive(responsePacket)
+                Log.d("UDP", "responsePacket : $responsePacket")
 
                 val response = String(responsePacket.data, 0, responsePacket.length)
+                Log.d("UDP", "response : $response")
                 socket.close()
-                response
+                response*/
+                socket.close()
+                message
             } catch (e: Exception) {
                 e.printStackTrace()
+                Log.d("UDP", "Error: ${e.message}")
                 throw e
             }
         }
