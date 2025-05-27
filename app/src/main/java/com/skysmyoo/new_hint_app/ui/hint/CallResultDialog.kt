@@ -66,7 +66,7 @@ fun CallResultDialog(
                 when (callNumber) {
                     "110" -> {
                         Image(
-                            painter = painterResource(id = R.drawable.calling_110_retry),
+                            painter = painterResource(id = R.drawable.calling_110),
                             contentDescription = "wrong number error image",
                             modifier = Modifier
                                 .weight(0.9f)
@@ -75,7 +75,7 @@ fun CallResultDialog(
                     }
                     "8132279" -> {
                         Image(
-                            painter = painterResource(id = R.drawable.calling_813_retry),
+                            painter = painterResource(id = R.drawable.calling_813),
                             contentDescription = "wrong number error image",
                             modifier = Modifier
                                 .weight(0.9f)

@@ -20,6 +20,7 @@ import com.skysmyoo.new_hint_app.ui.hint.AgentAssistantScreen
 import com.skysmyoo.new_hint_app.ui.hint.HintScreen
 import com.skysmyoo.new_hint_app.ui.hint.HintViewModel
 import com.skysmyoo.new_hint_app.ui.home.HomeScreen
+import com.skysmyoo.new_hint_app.ui.home.SplashScreen
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -57,8 +58,17 @@ fun Navigation(
 
     NavHost(
         navController = navController,
-        startDestination = if (storeViewModel.getStoreCode().isNullOrEmpty()) "login" else "home"
+        startDestination = "splash"
     ) {
+        composable("splash") {
+            SplashScreen {
+                val nextRoute = if (storeViewModel.getStoreCode().isNullOrEmpty()) "login" else "home"
+                navController.navigate(nextRoute) {
+                    popUpTo("splash") { inclusive = true }
+                }
+            }
+        }
+
         composable("login") {
             LoginScreen(navController, storeViewModel)
         }
